@@ -39,7 +39,7 @@ function DefineButtonRules(){
     document.page_ready = true;
   });
 
-  $("#lz_user").val("rgaitskell");
+  $("#lz_user").val(Math.random() < 0.001 ? "eaprile" : "rgaitskell");
 
   $(".det_control").change(function(){
     if(document.page_ready == true) {
@@ -86,6 +86,20 @@ function SetRemote(detector){
   }
 }
 
+function LinkingLogic(modes, links, active, remote, softstop, stopafter) {
+  if (_detectors.length == 0) return [null, null, null, true];
+  var ret = [null, null, null, false]; // tpc-mv, tpc-nv, mv-nv, invalid
+  // check these combos: tpc-mv, tpc-nv, mv-nv
+  for (var i = 0; i < _detectors.length-1; i++) {
+    for (var j = i+1; j < _detectors.length; j++) {
+      if (links[i].includes(_detectors[j]) || links[j].includes(_detectors[i]))
+        ret[3] ||= (modes[i] != modes[j] || active[i] != active[j] || stopafter[i] != stopafter[j] || softstop[i] != softstop[j] || remote[i] || remote[j]);
+      ret[i+j-1] = links[i].includes(_detectors[j]) && links[j].includes(_detectors[i]);
+    }
+  }
+  return ret;
+}
+
 function CheckLinking() {
   if (_detectors.length == 0) return;
   var modes = _detectors.map(det => $(`#${det}_mode`).val());
@@ -94,31 +108,33 @@ function CheckLinking() {
   var remote = _detectors.map(det => $(`#${det}_remote`).is(":checked"));
   var softstop = _detectors.map(det => $(`#${det}_softstop`).is(":checked"));
   var stopafter = _detectors.map(det => $(`#${det}_stop_after`).val());
-  var invalid = false;
-  var is_linked = [[null, false, false], [null, null, false]];
 
-  // check these combos: tpc-mv, tpc-nv, mv-nv
-  for (var i = 0; i < _detectors.length-1; i++) {
-    for (var j = i+1; j < _detectors.length; j++) {
-      if (links[i].includes(_detectors[j]) || links[j].includes(_detectors[i]))
-        invalid ||= (modes[i] != modes[j] || active[i] != active[j] || stopafter[i] != stopafter[j] || softstop[i] != softstop[j] || remote[i] || remote[j]);
-      is_linked[i][j] = links[i].includes(_detectors[j]) && links[j].includes(_detectors[i]);
-    }
-  }
-  var case_e = is_linked[0][1] == false && is_linked[0][2] == false && is_linked[1][2] == true;
+  var ret = LinkingLogic(modes, links, active, remote, softstop, stopafter);
+  var case_e = ret[0] == false && ret[1] == false && ret[2] == true;
 
   var html = "";
   if (!case_e) {
-    var mv = is_linked[0][1] ? "" : "un";
-    var nv = is_linked[0][2] ? "" : "un";
+    var mv = ret[0] ? "" : "un";
+    var nv = ret[1] ? "" : "un";
     html = `MV <i class="fas fa-${mv}link"></i> TPC <i class="fas fa-${nv}link"></i> NV`;
   } else {
     html = `TPC <i class="fas fa-unlink"></i> NV <i class="fas fa-link"></i> MV`;
   }
+  var modes_init = _detectors.map(det => initial_control[det]['mode']);
+  var active_init = _detectors.map(det => initial_control[det]['active']);
+  var remote_init = _detectors.map(det => initial_control[det]['remote']);
+  var softstop_init = _detectors.map(det => initial_control[det]['softstop']);
+  var stopafter_init = _detectors.map(det => intial_control[det]['stop_after']);
+  var links_init = _detectors.map(det => $(`#${det}_mode option`).filter(function() {return this.value === initial_control[det].mode;}).attr("link_type").split(','));
+  var ret_init = CheckLinking(modes_init, links_init, active_init, remote_init, softstop_init, stopafter_init);
+  for (var i in [0,1,2]) {
+    if (ret[i] ^ ret_init[i] && (active[i] != false)) // transitioning from linked to unlinked without stopping
+      ret[3] = true;
+  }
   $("#linking_span").html(html);
-  $("#linking_span").css("color", invalid ? "red" : "black");
-  $("#submit_changes").prop("disabled", invalid);
-  $("#submit_changes").text(invalid ? "Invalid combination" : "Submit");
+  $("#linking_span").css("color", ret[3] ? "red" : "black");
+  $("#submit_changes").prop("disabled", ret[3]);
+  $("#submit_changes").text(ret[3] ? "Invalid combination" : "Submit");
 }
 
 function PopulateOptionsLists(callback){
