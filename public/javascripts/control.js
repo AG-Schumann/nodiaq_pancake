@@ -1,6 +1,6 @@
 var initial_control = {};
 var _detectors = []; // namespacing issues
-const SCRIPT_VERSION = '20210709';
+const SCRIPT_VERSION = '20210921';
 
 function SetDetectorsLocal() {
   $.getJSON('control/template_info', data => {
@@ -120,16 +120,24 @@ function CheckLinking() {
   } else {
     html = `TPC <i class="fas fa-unlink"></i> NV <i class="fas fa-link"></i> MV`;
   }
-  var modes_init = _detectors.map(det => initial_control[det]['mode']);
-  var active_init = _detectors.map(det => initial_control[det]['active']);
-  var remote_init = _detectors.map(det => initial_control[det]['remote']);
-  var softstop_init = _detectors.map(det => initial_control[det]['softstop']);
-  var stopafter_init = _detectors.map(det => intial_control[det]['stop_after']);
+  var modes_init = _detectors.map(det => initial_control[det].mode);
+  var active_init = _detectors.map(det => initial_control[det].active);
+  var remote_init = _detectors.map(det => initial_control[det].remote);
+  var softstop_init = _detectors.map(det => initial_control[det].softstop);
+  var stopafter_init = _detectors.map(det => initial_control[det].stop_after);
   var links_init = _detectors.map(det => $(`#${det}_mode option`).filter(function() {return this.value === initial_control[det].mode;}).attr("link_type").split(','));
-  var ret_init = CheckLinking(modes_init, links_init, active_init, remote_init, softstop_init, stopafter_init);
-  for (var i in [0,1,2]) {
-    if (ret[i] ^ ret_init[i] && (active[i] != false)) // transitioning from linked to unlinked without stopping
-      ret[3] = true;
+  var ret_init = LinkingLogic(modes_init, links_init, active_init, remote_init, softstop_init, stopafter_init);
+  var is_idle = _detectors.map(det => $(`#${det}_status_icon`).attr('title').includes('IDLE'));
+  console(ret);
+  console.log(ret_init);
+  console.log(is_idle);
+  for (var i = 0; i < _detectors.length-1; i++) {
+    for (var j = i+1; j < _detectors.length; j++) {
+      if ((ret[i+j-1] ^ ret_init[i+j-1]) && !is_idle[i] && !is_idle[j]) {
+        // transitioning between linked and unlinked when the relevant detectors aren't idle
+        ret[3] = true;
+      }
+    }
   }
   $("#linking_span").html(html);
   $("#linking_span").css("color", ret[3] ? "red" : "black");
