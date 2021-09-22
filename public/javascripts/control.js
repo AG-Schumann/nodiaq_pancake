@@ -1,6 +1,6 @@
 var initial_control = {};
 var _detectors = []; // namespacing issues
-const SCRIPT_VERSION = '20210921';
+const SCRIPT_VERSION = '20210922';
 
 function SetDetectorsLocal() {
   $.getJSON('control/template_info', data => {
@@ -128,7 +128,7 @@ function CheckLinking() {
   var links_init = _detectors.map(det => $(`#${det}_mode option`).filter(function() {return this.value === initial_control[det].mode;}).attr("link_type").split(','));
   var ret_init = LinkingLogic(modes_init, links_init, active_init, remote_init, softstop_init, stopafter_init);
   var is_idle = _detectors.map(det => $(`#${det}_status_icon`).attr('title').includes('IDLE'));
-  console(ret);
+  console.log(ret);
   console.log(ret_init);
   console.log(is_idle);
   for (var i = 0; i < _detectors.length-1; i++) {
