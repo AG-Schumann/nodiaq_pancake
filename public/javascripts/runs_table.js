@@ -1,4 +1,4 @@
-const SCRIPT_VERSION = '20210622';
+const SCRIPT_VERSION = '20211103';
 
 function SearchTag(name){
   $("#mongoquery").val(`{"tags.name": "${name}"}`);
@@ -178,19 +178,9 @@ function InitializeRunsTable(divname){
     if(typeof tag ==="undefined")
       console.log("No tag!")
     else{
-      var runs = [];
-      var timelimit = 24*3600*1000; // one day
-      for(var i=0; i<table.rows('.selected')[0].length; i++) {
-        var data = table.rows(".selected").data()[i];
-        if (tag === 'abandon' && new Date() - new Date(data.start) > timelimit && data.bootstrax.state !== 'failed') {
-          console.log('Not abandoning ' + data.number);
-          // can't abandon old unfailed runs
-        } else {
-          runs.push(data.number);
-        }
-      }
+      var runs = table.rows('.selected').data().map(row => row.number);
+      if (tag === 'flash') document.getElementById("flash_whoa").play();
       if(runs.length>0) {
-        if (tag === 'flash') document.getElementById("flash_whoa").play();
         $.ajax({
           type: "POST",
           url: "runsui/addtags",
@@ -213,6 +203,7 @@ function InitializeRunsTable(divname){
     if(typeof tag ==="undefined")
       console.log("No tag!")
     else{
+      if (tag === 'flash') document.getElementById("flash_whoa").play();
       var runs = [];
       runs.push($("#detail_Number").html());
       var timelimit = 24*3600*1000; // one day
@@ -224,7 +215,6 @@ function InitializeRunsTable(divname){
         }
       }
       if(runs.length>0 && typeof runs[0] !== "undefined") {
-        if (tag === 'flash') document.getElementById("flash_whoa").play();
         $.ajax({
           type: "POST",
           url: "runsui/addtags",
