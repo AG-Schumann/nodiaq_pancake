@@ -3,7 +3,7 @@ var express = require("express");
 var url = require("url");
 var router = express.Router();
 var gp = '';
-const SCRIPT_VERSION = '20210622';
+const SCRIPT_VERSION = '20211103';
 
 function ensureAuthenticated(req, res, next) {
   return req.isAuthenticated() ? next() : res.redirect('/login');
@@ -64,7 +64,8 @@ router.post('/removetag', ensureAuthenticated, function(req, res){
   runint = parseInt(run, 10);
   // Update one
   var query = {number: runint};
-  var update = {$pull: {tags: {name: tag, user: tag_user}}};
+  var update = {$pull: {tags: {name: tag, user: tag_user}},
+    $push: {deleted_tags: {name: tag, user: tag_user, deleted_by: req.user.lngs_ldap_uid, date: new Date()}}};
   req.runs_coll.update(query, update)
   .then(() => res.status(200).json({}))
   .catch(err => {console.log(err.message); return res.status(200).json({err: err.message});});
