@@ -25,7 +25,7 @@ function UpdateMonitorPage(){
       $(`#${h}_mem_used`).html((data['virtual_memory']['percent']).toFixed(1)+"%").css("color", data['virtual_memory']['percent'] > 75 ? 'red' : 'black');
       $(`#${h}_swap`).html((data['swap_memory']['percent']).toFixed(1) + "%").css("color", data['swap_memory']['percent'] > 75 ? 'red' : 'black');
       $(`#${h}_load`).html(data['load'].toString());
-      $(`#${h}_drift`).html(data['drift'].toFixed(1) + ' s');
+      $(`#${h}_drift`).html(data['drift'].toFixed(1) + ' s').css("color", Math.abs(data['drift']) > 2 ? 'red' : 'black');
       [0,1].forEach(val => {
         $(`#${h}_cpu${val}_temp`).html((data.temperature[`package_id_${val}`] || 'n/a') + " C");
       });
