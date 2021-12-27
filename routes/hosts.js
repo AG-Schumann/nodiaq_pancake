@@ -36,6 +36,7 @@ router.get("/get_host_status", ensureAuthenticated, function(req, res){
     if (docs.length == 0)
       return res.json({});
     docs[0]['checkin'] = new Date() - docs[0]['time'];
+    docs[0]['drift'] = docs[0]['time'] - docs[0]['_id'].generationTime;
     return res.json(docs[0]);
   }).catch(err => {console.log(err.message); res.json({});});
 });
