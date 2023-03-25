@@ -71,6 +71,15 @@ function InitializeRunsTable(divname){
           return ret;
         }
       },
+      { data : "restrax", searchable: false,
+        "render": function(data, type, row){
+          ret = "";
+          if(typeof(data) != "undefined" && data.state != null && typeof data.host != 'undefined'){
+            ret+=data["host"].substr(0,3)+": "+data["state"];
+          } else ret += "Waiting";
+          return ret;
+        }
+      },
       { data : "user"},
       //{ data : "start", format: 'YYYY-MM-DD HH:mm', type: 'datetime', locale: 'UTC'},
       { data : "start", render: (data, type, row) => moment(data).utc().format('YYYY-MM-DD HH:mm')},
