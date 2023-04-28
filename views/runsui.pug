@@ -14,19 +14,14 @@ block extrahead
 block content
   div.main-container(style="height:100%")
     audio#flash_whoa(src="images/flash_whoa.mp3")
+    - var tags = ['prioritize', 'messy', 'flash', 'warm_spot', 'hot_spot', 'ramp_up', 'ramp_down'];
     div.row.det_card_noheight#addtagrow(style="display:none;padding-left:20px;")
       div.col-md-12.col-lg-6
-        div.form-group.row
+        //div.form-group.row
           label(for="taginput") Add tags to selected: &nbsp;
           select.form-control#taginput(style="width:20%;min-width:150px") Choose a tag
-            option(value="prioritize") prioritize
-            option(value="messy") messy
-            option(value="flash") flash
-            option(value="warm_spot") warm_spot
-            option(value="hot_spot") hot_spot
-            option(value="ramp_up") ramp_up
-            option(value="ramp_down") ramp_down
-            option(value="kr83m_and_ar37") kr83m_and_ar37
+            each tag in tags
+              option(value=`${tag}`) #{tag}
             span &nbsp;
           button.btn.btn-default#add_tag_button Add Tags
       div.col-md-12.col-lg-6
@@ -101,6 +96,12 @@ block content
                   span &nbsp;
                   button.btn.btn-default#add_tag_detail_button Add Tag
                   br
+                div.form-group.row(style="min-width:500px;padding-left:15px;")
+                  strong Suggested tags:
+                  ul
+                    each tag in tags
+                      li
+                        button.btn.tag-button #{tag}
               div.tab-pane.fade#tab_comments(role="tabpanel" aria-labelledby="comments-tab") 
                 table.table.table-striped
                   thead
@@ -125,7 +126,8 @@ block content
             button.btn.btn-error(type='button' data-dismiss='modal') Close
   script.
     $(document).ready(function(){
-      document.getElementById("flash_whoa").volume = 0.3;
+      document.getElementById("flash_whoa").volume = 0.8;
       DrawActiveLink("#lruns");
       InitializeRunsTable("#runs_table");
-      });
+      $(".tag-button").click(function() {$("#newtag").val(this.innerHTML)});
+    });
