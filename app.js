@@ -55,6 +55,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 var uri = `mongodb://${process.env.DAQ_MONGO_USER}:${process.env.MONGO_PASSWORD_DAQ}@${process.env.DAQ_MONGO_HOST}:${process.env.DAQ_MONGO_PORT}/${process.env.DAQ_MONGO_AUTH_DB}`;
+
 var store = new MongoDBStore({
   uri: uri,
   collection: 'mySessions'
@@ -130,18 +131,19 @@ app.use(function(req,res,next){
 app.use(function(req, res, next) {
   if (req.isAuthenticated()) {
     res.locals.user = req.user;
+    req.is_daq = typeof req.user != 'undefined' && typeof req.user.groups != 'undefined' && req.user.groups.includes('daq');
     req.template_info_base = {
       pagetitle: 'XENONnT DAQ',
       detectors: [['tpc', 'TPC'], ['muon_veto', 'Muon Veto'], ['neutron_veto', 'Neutron Veto']],
       headertitle: 'XENONnT Data Acquisition',
-      shortcuts : (typeof req.user != 'undefined' && typeof req.user.groups != 'undefined' && req.user.groups.includes('daq')) ? ['index', 'control', 'status', 'options', 'hosts', 'runs', 'monitor'] : ['index', 'control', 'status', 'runs', 'monitor', 'shifts', 'users'],
+      shortcuts : req.is_daq ? ['index', 'control', 'status', 'options', 'hosts', 'runs', 'monitor'] : ['index', 'control', 'status', 'runs', 'monitor', 'shifts', 'users'],
     };
   } else {
     req.template_info_base = {
       pagetitle: 'LZ DAQ',
       detectors: [['lz_tpc', 'LZ TPC'], ['lz_veto', 'LZ Veto']],
       headertitle: 'LZ Data Acquisition',
-      shortcuts : (typeof req.user != 'undefined' && typeof req.user.groups != 'undefined' && req.user.groups.includes('daq')) ? ['index', 'control', 'status', 'options', 'hosts', 'runs', 'monitor'] : ['index', 'control', 'status', 'runs', 'monitor', 'shifts', 'users'],
+      shortcuts : ['index', 'control', 'status', 'runs', 'monitor', 'shifts', 'users'],
     };
   }
   next();

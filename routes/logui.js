@@ -13,9 +13,13 @@ router.get('/', ensureAuthenticated, function(req, res) {
 
 router.get('/areThereErrors', ensureAuthenticated, function(req, res){
   var error_codes = [2, 3, 4]; //warning, error, fatal
-  req.db.get('log').count({"priority": {"$in": error_codes}})
-  .then( val => res.json({"error_docs": val}))
-  .catch(err => {console.log(err.message); return res.json({"error_docs": -1});});
+  if (req.is_daq) {
+    req.db.get('log').count({"priority": {"$in": error_codes}})
+    .then( val => res.json({"error_docs": val}))
+    .catch(err => {console.log(err.message); return res.json({"error_docs": -1});});
+  } else {
+    return res.json({error_docs: 0});
+  }
 });
 
 router.get('/getMessages', ensureAuthenticated, function(req, res){

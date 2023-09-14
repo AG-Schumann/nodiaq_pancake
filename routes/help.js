@@ -9,11 +9,11 @@ function ensureAuthenticated(req, res, next) {
 }
 
 router.get('/', ensureAuthenticated, function(req, res) {
-    res.render('help', { title: 'Help', user: req.user });
+    res.render('help', req.template_info_base);
 });
 
 router.get('/monitor', ensureAuthenticated, function(req, res) {
-    res.render('help_monitor', { title: 'Monitor Help', user: req.user });
+    res.render('help_monitor', req.template_info_base);
 });
 
 

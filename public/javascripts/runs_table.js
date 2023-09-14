@@ -175,9 +175,11 @@ function InitializeRunsTable(divname){
 
   $('#add_tag_button').click( function () {
     var tag = $("#taginput").val();
-    if(typeof tag ==="undefined")
-      console.log("No tag!")
-    else{
+    if(typeof tag ==="undefined" || tag == null || tag == "") {
+      alert('Please specify a tag');
+    } else if (tag.includes(' ')) {
+      alert('Tags cannot include spaces');
+    } else{
       var runs = table.rows('.selected').data().map(row => row.number);
       if (tag === 'flash') document.getElementById("flash_whoa").play();
       if(runs.length>0) {
@@ -200,9 +202,11 @@ function InitializeRunsTable(divname){
 
   $('#add_tag_detail_button').click( function () {
     var tag = $("#newtag").val();
-    if(typeof tag ==="undefined")
-      console.log("No tag!")
-    else{
+    if(typeof tag ==="undefined" || tag == null || tag == '') {
+      alert('Please specify a tag');
+    } else if (tag.includes(' ')) {
+      alert('Tags cannot include spaces');
+    } else{
       if (tag === 'flash') document.getElementById("flash_whoa").play();
       var runs = [];
       runs.push($("#detail_Number").html());
