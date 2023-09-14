@@ -288,7 +288,7 @@ function ShowDetail(run){
     $("#detail_Tags").html(typeof data.tags == 'undefined' ? "" : data['tags'].reduce((total, tag) => {
       var row = `<tr><td>${tag.name}</td>`;
       row += `<td>${tag.user}</td>`;
-      row += `<td>${moment(row.date).format("YYYY-MM-DD HH:mm")}</td>`;
+      row += `<td>${tag.date.substring(0, 16).replace('T', ' ')}</td>`;
       row += `<td><button onclick='RemoveTag("${data.number}", "${tag.user}", "${tag.name}")' class='btn btn-warning'>Remove tag</button></td></tr>`;
       return total + row;
     }, ""));
