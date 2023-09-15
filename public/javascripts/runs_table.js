@@ -64,18 +64,18 @@ function InitializeRunsTable(divname){
       { data : "mode", searchable: true },
       { data : "bootstrax", searchable: false,
         "render": function(data, type, row){
-          ret = "";
+          let ret = "";
           if(typeof(data) != "undefined" && data.state != null && typeof data.host != 'undefined'){
-            ret+=data["host"].substr(0,3)+": "+data["state"];
+            ret+=data["host"].substring(0,3)+": "+data["state"];
           } else ret += "Not yet processed";
           return ret;
         }
       },
       { data : "restrax", searchable: false,
         "render": function(data, type, row){
-          ret = "";
+          let ret = "";
           if(typeof(data) != "undefined" && data.state != null && typeof data.host != 'undefined'){
-            ret+=data["host"].substr(0,3)+": "+data["state"];
+            ret+=data["host"].substring(0,3)+": "+data["state"];
           } else ret += "Waiting";
           return ret;
         }

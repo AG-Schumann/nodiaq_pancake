@@ -25,8 +25,8 @@ runsdb.once('open', function callback ()
 		    user: String,
 		    mode: String,
 		    source: String,
-		    
 		    bootstrax: [{state: String, host: String, time: Date, started_processing: Date}],
+			restrax: [{state: String, host: String}],
 		    tags: [ {user: String, date: Date, name: String} ],
 		    comments: [{user: String, date: Date, text: String}],
 		},
