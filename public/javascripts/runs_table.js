@@ -126,7 +126,7 @@ function InitializeRunsTable(divname){
       { className: "not-selectable", width: 50, targets: [ 0 ] },
       { width: 60, targets: [1, 2]},
       {
-        targets: [6],
+        targets: [7],
         render: function(data){
           return moment(data).format('YYYY-MM-DD HH:mm');
         }
