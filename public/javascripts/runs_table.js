@@ -64,10 +64,19 @@ function InitializeRunsTable(divname){
       { data : "mode", searchable: true },
       { data : "bootstrax", searchable: false,
         "render": function(data, type, row){
-          ret = "";
+          let ret = "";
           if(typeof(data) != "undefined" && data.state != null && typeof data.host != 'undefined'){
-            ret+=data["host"].substr(0,3)+": "+data["state"];
+            ret+=data["host"].substring(0,3)+": "+data["state"];
           } else ret += "Not yet processed";
+          return ret;
+        }
+      },
+      { data : "restrax", searchable: false,
+        "render": function(data, type, row){
+          let ret = "";
+          if(typeof(data) != "undefined" && data.state != null && typeof data.host != 'undefined'){
+            ret+=data["host"].substring(0,3)+": "+data["state"];
+          } else ret += "Waiting";
           return ret;
         }
       },
@@ -117,7 +126,7 @@ function InitializeRunsTable(divname){
       { className: "not-selectable", width: 50, targets: [ 0 ] },
       { width: 60, targets: [1, 2]},
       {
-        targets: [6],
+        targets: [7],
         render: function(data){
           return moment(data).format('YYYY-MM-DD HH:mm');
         }
