@@ -4,12 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require("body-parser");
-
-// General MongoDB Access via monk
+var config = require('./config/config');
 var monk = require('monk');
-
-var runs_db = monk(`${process.env.RUNS_MONGO_AUTH_DB}/daq_pancake`, {authSource: 'admin'});
-var db = monk(`${process.env.RUNS_MONGO_AUTH_DB}/daq_pancake`, {authSource: 'admin'});
+var db = monk(`${config.mongo_uri}/daq_pancake`, {authSource: 'admin'});
 
 // Routers for all the sub-sites
 var indexRouter = require('./routes/index');
@@ -74,7 +71,7 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // Make our db accessible to our router
 app.use(function(req,res,next){
     req.db = db;
-    req.runs_coll = runs_db.get('runs');
+    req.runs_coll = db.get('runs');
     next();
 });
 

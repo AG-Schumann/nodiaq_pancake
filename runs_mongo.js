@@ -4,10 +4,11 @@ var runsModel;
 var runsdb = mongoose.connection;
 var runs;
 var runsTableSchema;
+const config = require('../config/config')
 
 //DataTable.configure({ verbose: false, debug : false });
 mongoose.plugin(DataTable.init);
-mongoose.connect(`${process.env.RUNS_MONGO_AUTH_DB}/daq_pancake`, {authSource: 'admin', useNewUrlParser:true, useUnifiedTopology: true});
+mongoose.connect(`${config.mongo_uri}/daq_pancake`, {authSource: 'admin', useNewUrlParser:true, useUnifiedTopology: true});
 
 
 runsdb.on('error', console.error.bind(console, 'connection error:'));
@@ -29,7 +30,7 @@ runsdb.once('open', function callback ()
 		    tags: [ {user: String, date: Date, name: String} ],
 		    comments: [{user: String, date: Date, text: String}],
 		},
-		{ collection: process.env.RUNS_MONGO_COLLECTION});
+		{ collection: 'runs'});
 	    
 	    runs = mongoose.model('runs', runsTableSchema);
 	    runsModel = require('mongoose').model('runs');
