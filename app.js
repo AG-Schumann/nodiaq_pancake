@@ -13,7 +13,6 @@ var db = monk(`${config.mongo_uri}/daq_pancake`, {authSource: 'admin'});
 
 // Routers for all the sub-sites
 var indexRouter = require('./routes/index');
-var loginRouter = require('./routes/login');
 var optionsRouter = require('./routes/options');
 var runsRouter = require('./routes/runsui');
 var logRouter = require('./routes/logui');
@@ -94,7 +93,6 @@ app.use(function(req, res, next) {
 app.get('/runtable/getDatatable', runs_mongo.getDataForDataTable);
 
 app.use('/', indexRouter);
-app.use('/login', loginRouter);
 app.use('/options', optionsRouter);
 app.use('/runsui', runsRouter);
 app.use('/logui', logRouter);

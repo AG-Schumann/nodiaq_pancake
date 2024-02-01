@@ -14,7 +14,8 @@ router.get('/template_info', common.ensureAuthenticated, function(req, res) {
 });
 
 router.get('/login', function(req, res){
-    res.render('login', { user: req.user });
+    var config = common.GetRenderConfig(req);
+    res.render('login', config);
 });
 
 router.get('/logout', function(req, res){
