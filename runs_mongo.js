@@ -4,7 +4,7 @@ var runsModel;
 var runsdb = mongoose.connection;
 var runs;
 var runsTableSchema;
-const config = require('../config/config')
+const config = require('./config/config')
 
 //DataTable.configure({ verbose: false, debug : false });
 mongoose.plugin(DataTable.init);
