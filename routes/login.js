@@ -8,3 +8,5 @@ router.get('/', function(req, res) {
     let config = common.GetRenderConfig(req);
     res.render('options', config);
 });
+
+module.exports = router;
