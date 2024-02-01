@@ -1,48 +1,15 @@
 var initial_control = {};
-var _detectors = []; // namespacing issues
 const SCRIPT_VERSION = '20210922';
 
 function SetDetectorsLocal() {
-  $.getJSON('control/template_info', data => {
-    _detectors = data.detectors.map(val => val[0]);
     PopulateOptionsLists(PullServerData);
     DefineButtonRules();
-  });
 }
 
 function DefineButtonRules(){
-  // handle LZ buttons first
-  $("#lz_remote").removeClass("det_control").removeClass("det_remote").change(function(){
-    document.page_ready = false;
-    if(!$("#lz_remote").is(":checked")){
-      alert("Local control of LZ is only available from SURF");
-      $("#lz_remote").bootstrapToggle('on');
-    }
-    document.page_ready = true;
-  });
-
-  $("#lz_active").removeClass("det_control").removeClass("det_active").change(function(){
-    document.page_ready = false;
-    if (!$("#lz_active").is(":checked")) {
-      alert("You can't stop LZ");
-      $("#lz_active").bootstrapToggle("on");
-    }
-    document.page_ready = true;
-  });
-
-  $("#lz_softstop").removeClass("det_control").removeClass("det_softstop").change(function(){
-    document.page_ready = false;
-    if($("#lz_softstop").is(":checked")){
-      alert("You want to go soft on LZ? I hope you aren't an AC");
-      $("#lz_softstop").bootstrapToggle('off');
-    }
-    document.page_ready = true;
-  });
-
-  $("#lz_user").val(Math.random() < 0.001 ? "eaprile" : "rgaitskell");
-
   $(".det_control").change(function(){
     if(document.page_ready == true) {
+      console.log('tere');
       $("#confirm_div").fadeIn("fast");
       CheckLinking();
     }
@@ -156,7 +123,7 @@ function PopulateOptionsLists(callback){
     }
     // [{_id: detector name, configs: []}, {_id: detector name....}]
     data.forEach(doc => {
-        $("#"+doc['_id']+"_mode").html(doc['configs'].reduce((html, val) => html+`<option value='${val[0]}' link_type='${val[2].join()}'><strong>${val[0]}:</strong> ${val[1]}</option>`, ""));
+      $("#"+doc['_id']+"_mode").html(doc['configs'].reduce((html, val) => html+`<option value='${val[0]}' link_type='${val[2].join()}'><strong>${val[0]}:</strong> ${val[1]}</option>`, ""));
     });
     callback();
   });
@@ -191,6 +158,8 @@ function PullServerData(){
 }
 
 function PostServerData(){
+
+  // TODO: make this only one detector? Do we need the remote vs. local distinction?
   post = {'version': SCRIPT_VERSION};
   var empty = true;
   _detectors.forEach(detector => {

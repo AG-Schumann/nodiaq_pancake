@@ -1,14 +1,13 @@
 var mongoose = require('mongoose');
 var DataTable = require('mongoose-datatable').default;
 var runsModel;
-var dbURI = process.env.RUNS_URI;
 var runsdb = mongoose.connection;
 var runs;
 var runsTableSchema;
 
 //DataTable.configure({ verbose: false, debug : false });
 mongoose.plugin(DataTable.init);
-mongoose.connect(dbURI, {authSource : process.env.RUNS_MONGO_AUTH_DB, useNewUrlParser:true, useUnifiedTopology: true});
+mongoose.connect(`${process.env.RUNS_MONGO_AUTH_DB}/daq_pancake`, {authSource: 'admin', useNewUrlParser:true, useUnifiedTopology: true});
 
 
 runsdb.on('error', console.error.bind(console, 'connection error:'));

@@ -14,7 +14,7 @@ function CheckMongoQuery(){
     alert("Your mongo query is not valid JSON!");
     return;
   }
-  document.datatable_options['ajax']['data'] ={"conditions": query};
+  document.datatable_options['ajax']['data'] = {"conditions": query};
   $(document.datatable_div).DataTable().destroy();
   $(document.datatable_div).DataTable(document.datatable_options);
 }

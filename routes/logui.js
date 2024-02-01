@@ -2,27 +2,20 @@
 var express = require("express");
 var url = require("url");
 var router = express.Router();
+var common = require('./common');
 
-function ensureAuthenticated(req, res, next) {
-  return req.isAuthenticated() ? next() : res.redirect('/login');
-}
-
-router.get('/', ensureAuthenticated, function(req, res) {
+router.get('/', common.ensureAuthenticated, function(req, res) {
   res.render('logui', req.template_info_base);
 });
 
-router.get('/areThereErrors', ensureAuthenticated, function(req, res){
+router.get('/areThereErrors', common.ensureAuthenticated, function(req, res){
   var error_codes = [2, 3, 4]; //warning, error, fatal
-  if (req.is_daq) {
-    req.db.get('log').count({"priority": {"$in": error_codes}})
-    .then( val => res.json({"error_docs": val}))
-    .catch(err => {console.log(err.message); return res.json({"error_docs": -1});});
-  } else {
-    return res.json({error_docs: 0});
-  }
+  req.db.get('log').count({"priority": {"$in": error_codes}})
+  .then( val => res.json({"error_docs": val}))
+  .catch(err => {console.log(err.message); return res.json({"error_docs": -1});});
 });
 
-router.get('/getMessages', ensureAuthenticated, function(req, res){
+router.get('/getMessages', common.ensureAuthenticated, function(req, res){
   var q = url.parse(req.url, true).query;
   var limit = q.limit;
   var include = q.get_priorities;
@@ -43,14 +36,14 @@ router.get('/getMessages', ensureAuthenticated, function(req, res){
   .catch(err => {console.log(err.message); return res.json([]);});
 });
 
-router.post('/new_log_message', ensureAuthenticated, (req, res) => {
+router.post('/new_log_message', common.ensureAuthenticated, (req, res) => {
   var p = 5;
   if(typeof req.body.priority != 'undefined')
     p=parseInt(req.body.priority);
   if (req.body.entry == "")
     return res.sendStatus(200);
   var idoc = {
-    "user": req.user.lngs_ldap_uid,
+    "user": req.user.username,
     "message": req.body.entry,
     "priority": p,
     "runid": parseInt(-1)
@@ -60,13 +53,13 @@ router.post('/new_log_message', ensureAuthenticated, (req, res) => {
   .catch(err => {console.log(err.message); return res.sendStatus(400);});
 });
 
-router.post('/acknowledge_errors', ensureAuthenticated, (req, res) => {
+router.post('/acknowledge_errors', common.ensureAuthenticated, (req, res) => {
   var error_codes = [2, 3, 4]; //warning, error, fatal
   var matchdoc = {"priority": {"$in": error_codes}};
   var updatedoc = {
     "$inc": {"priority": 10},
     "$set": {
-      "closing_user": req.user.lngs_ldap_uid,
+      "closing_user": req.user.username,
       "closing_message": req.body.message,
       "closing_date": new Date()
     }

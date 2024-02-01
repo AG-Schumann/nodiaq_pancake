@@ -1,5 +1,5 @@
 {
-	"name": "xenonntdaq",
+	"name": "pancakedaq",
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
@@ -33,10 +33,10 @@
 		"nodemailer": "^4.6.8",
 		"passport": "^0.4.1",
 		"passport-github2": "^0.1.11",
-		"passport-ldapauth": "^2.1.3",
 		"pug": "^3.0.0",
 		"serve-favicon": "^2.5.0",
 		"sessionstore": "^1.3.7",
-		"tabulator-tables": "^4.7.2"
+		"tabulator-tables": "^4.7.2",
+		"request": "^2.88.2"
 	}
 }

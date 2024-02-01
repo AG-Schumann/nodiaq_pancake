@@ -1,5 +1,3 @@
-// public/javascripts/logui_scripts.js
-
 var table;
 
 function NewMessage(){
@@ -34,12 +32,6 @@ function CloseOpenErrors(){
       $("#error_modal").modal('hide');
     }
   });
-}
-
-function DateToString(date){
-  if(isNaN(date.getFullYear()))
-    return "none";
-  return (date.getFullYear().toString()+"-"+(date.getMonth()+1).toString()+"-"+date.getDay().toString()+" at " + date.getHours().toString() + ":"+date.getMinutes().toString()+":"+date.getSeconds().toString());
 }
 
 function InitializeTable(DOM){

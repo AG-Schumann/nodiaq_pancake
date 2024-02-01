@@ -3,60 +3,87 @@ extends layout
 block extrahead
   script(src="/javascripts/mustache.min.js", type="text/javascript")
   script(src="javascripts/overview.js", type="text/javascript")
+  script(src="javascripts/status_scripts.js", type="text/javascript")
   link(rel="stylesheet" href="/stylesheets/overview.css")
 
 block content
   div.main-container(style='background-color:#eeeeee;margin:-5px;padding:15px;height:100vh')
-    div.det_card
-        span.fontscale Welcome #{user.first_name}, to the XENONnT DAQ control interface.
-    br
-
     div.row
-      each val in detectors
-        div.col-md-4.col-xs-12
-          div.det_card_noheight
-            h5
-              img(src=`/images/${val[0]}_icon.png` style="margin-top:-10px;height:35px;")
-              span &nbsp;&nbsp;
-              span(style='font-size:14px;color:#333333;') The #{val[1]} is &nbsp;
-               strong(id=`${val[0]}_status`)
-            p
-              span(style='font-size:40px' id=`${val[0]}_rate`)
-              strong &nbsp; MB/s
-            p(style='font-size:10px')
-              span Run &nbsp;
-              strong(id=`${val[0]}_number`)
-              span &nbsp; in &nbsp;
-              strong(id=`${val[0]}_mode`)
-              span &nbsp; mode &nbsp;
-    br
-    div.row(style='margin:0px')
-      div.col-12.col-md-6.det_card_noheight
+      div.col-md-6.col-xs-12
         div.row
           div.col-12
-            strong Run History &nbsp;&nbsp;
-            div.btn-group.btn-group-toggle#pie_button(data-toggle="buttons")
-              label.btn.btn-secondary
-                input(type="radio" name="options" id="option1" autocomplete="off" value=10)
-                span 10 days
-              label.btn.btn-secondary.active
-                input(type="radio" name="options" id="option2" autocomplete="off" value=30 checked)
-                span 30 days
-              label.btn.btn-secondary
-                input(type="radio" name="options" id="option3" autocomplete="off" value=90)
-                span 90 days
+            div.det_card
+              span.fontscale Welcome to the Pancake control interface.
+        br
+        div.row
+          div.col-12
+            div.det_card
+              h5
+                span &nbsp;&nbsp;
+                span(style='font-size:14px;color:#333333;') The PMT array is &nbsp;
+                 strong#status
+              p
+                span#rate(style='font-size:40px')
+                strong &nbsp; MB/s
+              p(style='font-size:10px')
+                span Run &nbsp;
+                strong#run_number
+                span &nbsp; in &nbsp;
+                strong#mode
+                span &nbsp; mode &nbsp;
+      div.col-md-6.col-xs-12
+        div.det_card_noheight
+          strong Run History &nbsp;&nbsp;
+          div.btn-group.btn-group-toggle#pie_button(data-toggle="buttons")
+            label.btn.btn-secondary
+              input(type="radio" name="options" id="option1" autocomplete="off" value=10)
+              span 10 days
+            label.btn.btn-secondary.active
+              input(type="radio" name="options" id="option2" autocomplete="off" value=30 checked)
+              span 30 days
+            label.btn.btn-secondary
+              input(type="radio" name="options" id="option3" autocomplete="off" value=90)
+              span 90 days
+          div#pie_box
+    br
+    div.row
+      div.col-12
+        div.fullsizechart.det_card
+          div.chart_header(style='font-size:12px')
+            strong(style='font-size:22px') Status History &nbsp;&nbsp;
+            strong(style='font-size:12px') Time: &nbsp;
+            select.cselect#menu_history_s(style="width:100px")
+              option(value=172800) 48h
+              option(value=129600) 36h
+              option(value=86400 selected) 24h
+              option(value=43200) 12h
+              option(value=21600) 6h
+              option(value=3600) 1h
 
-        div#pie_box
-      div.col-12.col-md-6
-        div.det_card_noheight(style='height:100%')
-          h5 Who's on Shift
-          div#shift_box
-            div(style='text-align:center') Nobody on shift. Direct all requests to localhost.
+            strong(style='font-size:12px') &nbsp;&nbsp; Resolution: &nbsp;
+            select.cselect#menu_resolution_s(style="width:100px")
+              option(value=10) 10s
+              option(value=30) 30s
+              option(value=60 selected) 1m
+              option(value=300) 5m
+              option(value=600) 10m
+
+            strong(style='font-size:12px') &nbsp;&nbsp; Variable: &nbsp;
+            select.cselect#menu_variable_s(style="width:100px")
+              option(value='rate') Data rate
+              option(value='buff') Buffer size
+
+            span &nbsp;&nbsp;
+
+            button.btn.btn-info#update_button(style="height:80%;padding-top:3px" onclick="RedrawRatePlot()") Update
+          div.chart_body#rate_chart(style="height:300px")
+      div.col-md-6.col-xs-12
+
+
 
   script.
     $(document).ready(function(){
       DrawActiveLink("#lindex");
-      PopulateShifters("shift_box");
       DrawPie("pie_box", 30);
       $("#pie_button :input").change(function() {
          DrawPie("pie_box", $(this).val());

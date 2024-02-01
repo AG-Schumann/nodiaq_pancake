@@ -8,102 +8,23 @@ html
     link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous")
     link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous")
     link(rel="stylesheet" href="/stylesheets/bootstrap-social.css")
-    link(rel="stylesheet" href="/stylesheets/crapcha.css")
-
   
     
     // body(style="background-color:#5992c2")
-  body(background="/images/bgb_01.jpg")
+  body(style="background-image: url('/images/login_bkg.png');")
     div.row(style="padding-top:5%")
       div.col-md-4.col-sm-3.col-xs-1
       div.col-md-4.col-sm-6.col-xs-9(style="background-color:white;border-color:#aaaaaa")
         br
-        h5 Welcome to the DAQ, please log in
+        h5 Welcome to the Pancake DAQ, please log in
         hr
-        strong Option 1: Login with Github. 
-        span(style="font-color:#bbbbbb") 
-        br
-        div(style='width:100%;text-align:center')
-          a.btn.btn-block.btn-social.btn-large.btn-github(style="max-width:300px"
-href="/auth/github")
-            i.fab.fa-github
-            span Login with GitHub
-        br
-        //div.accordion#accordion
-        //  div.card
-        //    div.card-header#heading(style="padding:5px")
-        //      //h5.mb-0
-        //      button.btn.btn-link(type="button" data-toggle="collapse" data-target="#linkCollapse" aria-expanded="true" aria-controls="linkCollapse") To link your GitHub, click here
-        //    div.collapse.hide#linkCollapse(data-parent="#accordion")
-        //      div.card-body
-        //        p Please add your github account login and the email associated with your XENON account. You will receive a mail with an activation link, which you must click to link the accounts.
-        //        form(method="post" action="/linkGithub")
-        //          div.form-group
-        //            label.form-label(for="email") Email associated with your XENON membership
-        //            input.form-control(type="email" name="email")
-        //          div.form-group
-        //            label.form-label(for="github") GitHub ID
-        //            input.form-control(type="text" name="github")
-        //          button.btn.btn-basic(type="submit") Request Activation Email
+        div
+            a.btn.btn-social.btn-large.btn-github(href="/auth/github")
+                i.fab.fa-github
+                span Login with GitHub
         hr
-        strong Option 2: Login with LNGS Credentials.
-        br
-        div(style='width:100%;text-align:center')
-          a.btn.btn-block.btn-social.btn-large.btn-facebook(type="button" data-toggle="modal" data-target="#LNGSmodal" style="max-width:300px;color:white;")
-            i.fa.fa-hand-spock
-            span Login via LNGS
-        br
-        //div.accordion#accordion
-        //  div.card
-        //    div.card-header#heading(style="padding:5px")
-        //      button.btn.btn-link(type="button" data-toggle="collapse" data-target="#llinkCollapse" aria-expanded="true" aria-controls="llinkCollapse") To link your LNGS ID, click here
-        //    div.collapse.hide#llinkCollapse(data-parent="#accordion")
-        //      div.card-body
-        //        p Please add your LNGS account login and the email associated with your XENON account. You will receive a mail with an activation link, which you must click to link the accounts. 
-        //        form(method="post" action="/linkLDAP")
-        //          div.form-group
-        //            label.form-label(for="email") Email associated with your XENON membership
-        //            input.form-control(type="email" name="email")
-        //          div.form-group
-        //            label.form-label(for="lngs_id") LNGS ID
-        //            input.form-control(type="text" name="lngs_id")
-        //          button.btn.btn-basic(type="submit") Request Activation Email
-        br
-        //strong Option 3: Login with password
-        //br
-        //br
-        //div(style='width:100%;text-align:left')
-        //  form(method='post' action='/auth/password')
-        //    div.row
-        //      div.col-md-6.col-xs-12.form-group
-        //        label.form-label(for='email') XENON Email
-        //        input.form-control(type='email' name='email')
-        //      div.col-md-6.col-xs-12.form-group
-        //        label.form-label(for='password') Password
-        //        input.form-control(type='password' name='password')
-        //    button.btn.btn-info(type='submit') Submit
-        //br
-        //br
-      div.col-sm-3.col-xs-1
-    div.modal.fade#LNGSmodal(tabindex="-1" role="dialog")
-      div.modal-dialog(role="document")
-        div.modal-content
-          div.modal-body
-            br
-            form(method='post' action='/auth/ldap')
-              div.row
-                div.col-md-6.col-xs-12.form-group
-                  label.form-label(for='email') LNGS ID
-                  input.form-control(type='text' name='user' required)
-                div.col-md-6.col-xs-12.form-group
-                  label.form-label(for='password') LNGS Password
-                  input.form-control(type='password' name='password' required)
-              
-                br 
-              h6 Are you a robot? Please complete captcha:
-              div.crapcha
-              //iframe(src="https://crapcha.com/embed/" frameborder="0" scrolling="0" width="300" height="150")
-              br
-              br
-              button.btn.btn-info(type='submit') Submit
-        script(src="/javascripts/crapcha.js" type="text/javascript")
+        ol.ps-4
+            li You must be part of the #{github_org} GitHub organization. If you aren't, ask one of the owners to add you.
+            li Set your membership to 'public' in the&nbsp;
+                a(href="https://github.com/orgs/" + github_org + "/people" target="_blank" rel="noopener noreferrer") settings of the organization.
+            li Click the button above and log in with your GitHub credentials.
