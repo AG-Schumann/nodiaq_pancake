@@ -6,7 +6,7 @@ const SCRIPT_VERSION = '20210922';
 var common = require('./common');
 
 router.get('/', common.ensureAuthenticated, function(req, res) {
-  var config = common.GetRenderConfig(req);
+  let config = common.GetRenderConfig(req);
   res.render('control', config);
 });
 

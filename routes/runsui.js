@@ -6,7 +6,8 @@ var common = require('./common');
 
 
 router.get('/', common.ensureAuthenticated, function(req, res) {
-  res.render('runsui');
+  let config = common.GetRenderConfig(req);
+  res.render('runsui', config);
 });
 
 router.get('/get_run_doc', common.ensureAuthenticated, function(req, res){

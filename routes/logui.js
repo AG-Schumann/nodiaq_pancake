@@ -5,7 +5,8 @@ var router = express.Router();
 var common = require('./common');
 
 router.get('/', common.ensureAuthenticated, function(req, res) {
-  res.render('logui', req.template_info_base);
+  let config = common.GetRenderConfig(req);
+  res.render('logui', config);
 });
 
 router.get('/areThereErrors', common.ensureAuthenticated, function(req, res){

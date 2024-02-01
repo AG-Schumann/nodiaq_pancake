@@ -8,7 +8,8 @@ var common = require('./common');
 
 
 router.get('/', common.ensureAuthenticated, function(req, res) {
-  res.render('status');
+  let config = common.GetRenderConfig(req);
+  res.render('status', config);
 });
 
 

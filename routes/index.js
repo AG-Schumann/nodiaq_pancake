@@ -5,7 +5,8 @@ var common = require('./common');
 
 /* GET home page. */
 router.get('/', common.ensureAuthenticated, function(req, res) {
-  res.render('index');
+    var config = common.GetRenderConfig(req);
+    res.render('index', config);
 });
 
 router.get('/template_info', common.ensureAuthenticated, function(req, res) {
