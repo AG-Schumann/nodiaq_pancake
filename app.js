@@ -5,6 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require("body-parser");
 var config = require('./config/config');
+const hostname = config.host;
+const port = parseInt(config.port);
+
 var monk = require('monk');
 var db = monk(`${config.mongo_uri}/daq_pancake`, {authSource: 'admin'});
 
@@ -112,5 +115,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(port, hostname, () => {console.log(`Server running on ${hostname}:${port}`);});
+
 
 module.exports = app;
