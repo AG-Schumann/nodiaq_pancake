@@ -13,14 +13,10 @@ router.get('/', common.ensureAuthenticated, function(req, res) {
 });
 
 router.get("/options_list", common.ensureAuthenticated, function(req, res){
-  // TODO: make this work for one detector
-  req.db.get('options').aggregate([
-    {$unwind: '$detector'},
-    {$sort: {name: 1}},
-    {$group: {_id: '$detector', modes: {$push: '$name'}}},
-    {$sort: {_id: -1}}
-  ]).then(docs => res.json(docs))
-  .catch(err => {console.log(err.message); return res.json([]);});
+  // get names of all runmodes
+  req.db.get('options').distinct('name')
+      .then(docs => res.json(docs))
+      .catch(err => {console.log(err.message); return res.json([]);});
 });
 
 router.get("/options_json", common.ensureAuthenticated, function(req, res){

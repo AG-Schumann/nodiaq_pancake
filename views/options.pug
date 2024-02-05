@@ -26,7 +26,7 @@ block content
 
     $(document).ready(function () {
       DrawActiveLink("#loptions");
-      SetDetectorsLocal();
-      document.jsoneditor = new JSONEditor(document.getElementById("json_text"), 
+      PopulateModeList();
+      document.jsoneditor = new JSONEditor(document.getElementById("json_text"),
         {"modes":  ['tree', 'view', 'form', 'code', 'text']});
     });

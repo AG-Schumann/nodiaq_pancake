@@ -2,19 +2,12 @@
 var detectors_local = {};
 const SCRIPT_VERSION = '20210622';
 
-function SetDetectorsLocal(){
-  $.getJSON("options/template_info", data => {
-    data.detectors.forEach(det => {detectors_local[det[0]] = det[1];});
-    data.extra_detectors.forEach(det => {detectors_local[det[0]] = det[1];});
-    PopulateModeList("run_mode_select");
-  });
-}
 
-function PopulateModeList(div){
-  $.getJSON("options/options_list", function(data){
-    $("#"+div).html(data.reduce((total, entry) => entry.modes.reduce((tot, mode) => tot + `<option value='${mode}'>${mode}</option>`, total + `<optgroup label='${detectors_local[entry["_id"]]}'>`), ""));
-    $("#"+div).prop('disabled', false);
-    $('#'+div).selectpicker();
+function PopulateModeList(){
+  $.getJSON("options/options_list", function(name){
+    $("#run_mode_select").append(`<option value=${name}> ${name} </option>`);
+    $("#run_mode_select").prop('disabled', false);
+    $("#run_mode_select").selectpicker();
   });
 }
 

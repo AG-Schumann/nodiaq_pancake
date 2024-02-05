@@ -21,11 +21,6 @@ block content
           div.float-right(style='display:inline-block')
               div.form-check-inline
                 label.form-check-label
-                  span Control &nbsp;
-                  input.det_control(id="remote" type="checkbox" checked data-toggle="toggle"
-                    data-onstyle="success" data-offstyle="success" data-on="remote" data-off="local" data-size="small")
-              div.form-check-inline
-                label.form-check-label
                   span Run &nbsp;
                   input.det_control(id="active" type="checkbox" checked data-toggle="toggle"
                     data-onstyle="success" data-offstyle="danger" data-on="on" data-off="off" data-size='small')
@@ -40,11 +35,11 @@ block content
           label.form-label(for='user') Controller
           input.form-control.my_name_is.fontscale(id='user' type="text" value=`${username}` name="user" readonly required)
         div.col-xs-12.col-sm-6.col-md-4.col-xl-2.form-group
-          label.form-label(for=`stop_after`) Length (minutes)
-          input.form-control.det_control.det_stop_after(id=`stop_after` type="number" name="stop_after" min=1 max=1440 value=60)
+          label.form-label(for='stop_after') Length (minutes)
+          input.form-control.det_control#stop_after(type="number" min=1 max=1440 value=60)
         div.col-xs-12.col-sm-6.col-md-4.col-xl-4.form-group.fontscale
-          label.form-label(for=`mode`) Run Mode
-          select.form-control.det_control.det_mode(id=`mode` name="run_mode" required)
+          label.form-label(for='mode_select') Run Mode
+          select.form-control.det_control.det_mode#mode_select(name="run_mode" required)
         div.col-xs-12.col-sm-6.col-md-12.col-xl-4.form-group
           label.form-label(for=`comment`) Comment
           textarea.form-control.det_control.det_comment(id=`comment` rows="2" name="comment" type='text')
@@ -53,6 +48,11 @@ block content
   script.
     $(document).ready(function(){
       DrawActiveLink("#lcontrol");
-      SetDetectorsLocal();
+      PopulateOptionsLists(PullServerData);
       document.page_ready = false;
+      $(".det_control").change(function () {
+        if (document.page_ready == true) {
+          $("#confirm_div").fadeIn("fast");
+        }
+      });
     });
