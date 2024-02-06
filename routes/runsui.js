@@ -1,3 +1,4 @@
+
 var express = require("express");
 var url = require("url");
 var router = express.Router();
@@ -10,14 +11,44 @@ router.get('/', common.ensureAuthenticated, function(req, res) {
   res.render('runsui', config);
 });
 
+router.get('/get_runs_table', common.ensureAuthenticated, function getData (req, res) {
+
+  var conditions = {};
+  if (typeof req.query['conditions'] !== 'undefined')
+    conditions = JSON.parse(req.query['conditions']);
+  // Date filtering
+  if (req.query['date_min'] !== undefined) {
+    if (req.query['date_min'] !== '' &&
+        req.query['date_max'] == '' &&
+        !('start' in Object.keys(conditions)))
+      conditions['start'] = {"$gt": new Date(req.query['date_min'])};
+    else if (req.query['date_min'] !== '' &&
+        req.query['date_max'] !== '' &&
+        !('start' in Object.keys(conditions)))
+      conditions['start'] = {
+        "$gt": new Date(req.query['date_min']),
+        "$lt": new Date(req.query['date_max'])
+      };
+    else if (req.query['date_min'] == '' &&
+        req.query['date_max'] !== '' &&
+        !('start' in Object.keys(conditions)))
+      conditions['start'] = {"$lt": new Date(req.query['date_max'])};
+  }
+
+  req.db.get('runs').find(conditions)
+      .then(docs => res.json(docs))
+      .catch(err => {console.log(err.message); return res.json([]);});
+});
+
 router.get('/get_run_doc', common.ensureAuthenticated, function(req, res){
   var q = url.parse(req.url, true).query;
   var num = q.run;
+  var mode = q.mode
   if(typeof num !== 'undefined')
     num = parseInt(num, 10);
   if(typeof num === "undefined")
     return res.json({});
-  req.runs_coll.findOne({"number": num})
+  req.runs_coll.findOne({"run_id": num, "mode": mode})
   .then( doc => res.json(doc === null ? {} : doc))
   .catch(err => {console.log(err.message); return res.json({});});
 });
@@ -96,7 +127,7 @@ router.get('/runsfractions', common.ensureAuthenticated, function(req, res){
   var total = days*86400*1000;
   var querydays = new Date(new Date() - total);
   req.runs_coll.aggregate([
-    {$match : {detectors : 'tpc', start : {$gt : querydays}}},
+    {$match : {start : {$gt : querydays}}},
     {$project : {mode : 1, user : 1, start : 1, end : 1}},
     {$group : {
       _id : '$mode',
@@ -114,5 +145,7 @@ router.get('/runsfractions', common.ensureAuthenticated, function(req, res){
   .then(docs => res.json(docs))
   .catch(err => {console.log(err.message); return res.json([]);});
 });
+
+
 
 module.exports = router;

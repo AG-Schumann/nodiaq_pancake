@@ -9,7 +9,7 @@ const hostname = config.host;
 const port = parseInt(config.port);
 
 var monk = require('monk');
-var db = monk(`${config.mongo_uri}/daq_pancake`, {authSource: 'admin'});
+var db = monk(`${config.mongo_uri}/${config.daq_db}`, {authSource: 'admin'});
 
 // Routers for all the sub-sites
 var indexRouter = require('./routes/index');
@@ -20,11 +20,9 @@ var statusRouter = require('./routes/status');
 var authRouter = require('./routes/auth');
 var controlRouter = require('./routes/control');
 
-// For Runs DB Datatable
-var runs_mongo = require("./runs_mongo");
-
 // Using express!
 var app = express();
+app.use('/modules', express.static(path.join(__dirname, 'node_modules')));
 
 // For parsing POST data from request body
 app.use(bodyParser.urlencoded({extended: true}));
@@ -88,9 +86,6 @@ app.use(function(req, res, next) {
   }
   next();
 });
-
-// This is the route for the automatic runs datatable api function
-app.get('/runtable/getDatatable', runs_mongo.getDataForDataTable);
 
 app.use('/', indexRouter);
 app.use('/options', optionsRouter);

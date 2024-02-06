@@ -1,10 +1,5 @@
-var prefix = '';
-
-
 function DrawPie(pie_div, ndays){
-
-  $.getJSON(prefix+"/runsui/runsfractions?days="+ndays, function(data){
-
+  $.getJSON("/runsui/runsfractions?days="+ndays, function(data){
     if(typeof(document.piechart) != 'undefined')
       document.piechart.destroy;
     var series = data.map(entry => ({name: entry._id, y: entry.runtime}));

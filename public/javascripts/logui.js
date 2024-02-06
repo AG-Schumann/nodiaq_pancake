@@ -52,10 +52,8 @@ function InitializeTable(DOM){
   ];
 
   // Get the window height minus padding (80px)
-  var vh = $(window).height() - $("#newentry").outerHeight(true) - $("#errorbar").outerHeight(true) - 80;
   table = new Tabulator(DOM, {
   //$(DOM).tabulator({
-    height: vh,
     layout:"fitColumns", //fit columns to width of table (optional)
     pagination: "local",
     paginationSize: 24, // magic number based on my screen size
@@ -90,7 +88,7 @@ function InitializeTable(DOM){
 }
 
 function UpdateLogTable(DOM){
-  var get_me = "";
+  var get_me = "&get_priorities=";
   var checkboxes = {
     "cb_message": 1,
     "cb_open_warning": 2,
@@ -103,8 +101,9 @@ function UpdateLogTable(DOM){
   }
   for(var key in checkboxes){
     if($("#"+key).is(":checked")){
-      get_me+="&get_priorities="+checkboxes[key].toString();
+      get_me+=checkboxes[key].toString()+',';
     }
   }
-  table.setData('logui/getMessages', {limit: '500' + get_me})
+  get_me = get_me.slice(0, -1); // remove last comma
+  table.setData('logui/getMessages?limit=500'+get_me);
 }

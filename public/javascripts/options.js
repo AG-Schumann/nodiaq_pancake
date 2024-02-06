@@ -1,13 +1,14 @@
-// public/javascripts/options_scripts.js
+// public/javascripts/options.js
 var detectors_local = {};
 const SCRIPT_VERSION = '20210622';
 
 
 function PopulateModeList(){
-  $.getJSON("options/options_list", function(name){
-    $("#run_mode_select").append(`<option value=${name}> ${name} </option>`);
+  $.getJSON("options/options_list", function(run_modes){
+    $.each(run_modes, function(index, run_mode){
+      $("#run_mode_select").append(`<option value="${run_mode}">${run_mode}</option>`);
+    });
     $("#run_mode_select").prop('disabled', false);
-    $("#run_mode_select").selectpicker();
   });
 }
 

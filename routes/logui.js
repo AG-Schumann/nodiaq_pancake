@@ -23,8 +23,9 @@ router.get('/getMessages', common.ensureAuthenticated, function(req, res){
   if (typeof include == 'undefined')
     include = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
   else
+    include = include.split(',');
     include = include.map(Number);
-
+    console.log(include);
   if (typeof limit == 'undefined')
     limit = 100;
   req.db.get('log').aggregate([
