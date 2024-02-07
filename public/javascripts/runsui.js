@@ -40,15 +40,27 @@ var getRunLength = function(cell) {
   return ret;
 }
 
-var getTags = function (cell) {
+var getTags = function(cell) {
   var ret = '';
   var tags = cell.getValue();
   if(typeof(tags) != "undefined"){
-    ret =tags.reduce((tot, tag) => {
+    ret = tags.reduce((tot, tag) => {
       var divclass = "badge-" + (tag["name"][0] === "_" ? "primary" : "secondary");
       var html = `<div class='inline-block mx-1'><span class='badge ${divclass}' style='cursor:pointer' onclick='SearchTag("${tag.name}")'>${tag.name}</span></div>`;
       return tot + html;
     }, "");
+  }
+  return ret;
+}
+
+var getNewestComment = function(cell) {
+  var ret = '';
+  var comments = cell.getValue();
+  if (typeof(comments) != "undefined" && comments.length>0)
+    ret +=  comments[comments.length-1]["comment"];
+  if (comments.length>1) {
+    ret += ` + ${comments.length - 1} additonal comment`;
+    (comments.length > 2) && (ret += 's');
   }
   return ret;
 }
@@ -98,7 +110,12 @@ function InitializeRunsTable() {
             hozAlign: "center",
             headerHozAlign: "center"
           },
-          {title: 'Newest Comment', field: 'comment', vertAlign: "middle", hozAlign: "center", headerHozAlign: "center"}
+          {title: 'Newest Comment',
+            field: 'comments',
+            formatter: getNewestComment,
+            vertAlign: "middle",
+            hozAlign: "center",
+            headerHozAlign: "center"}
         ],
   });
   table.setSort([

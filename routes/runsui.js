@@ -108,7 +108,7 @@ router.post('/addcomment', common.ensureAuthenticated, function(req, res){
   var runsint = parseInt(run);
   var query = {'run_id': runsint, 'mode': mode};
   var update = {$push: {'comments': {'date': new Date(), 'user': user, 'comment': comment}}};
-  req.runs_coll.updateOne(query, update)
+  req.runs_coll.update(query, update)
       .then( () => res.status(200).json({}))
       .catch(err => {console.log(err.message); return res.status(200).json({err: err.message});});
 });
