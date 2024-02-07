@@ -31,7 +31,6 @@ var getRunLength = function(cell) {
   if(typeof(end) === "undefined" || end === "")
     return "not set"
   let tdiff = (new Date(end)).getTime() - (new Date(start)).getTime();
-  console.log(tdiff);
   var hours = Math.floor(tdiff/(1000*3600));
   var mins = Math.floor(tdiff/(1000*60)) - (60*hours);
   var secs = Math.floor(tdiff/(1000)) - (3600*hours + 60*mins);
@@ -41,88 +40,132 @@ var getRunLength = function(cell) {
   return ret;
 }
 
-function InitializeRunsTable(){
+var getTags = function (cell) {
+  var ret = '';
+  var tags = cell.getValue();
+  if(typeof(tags) != "undefined"){
+    ret =tags.reduce((tot, tag) => {
+      var divclass = "badge-" + (tag["name"][0] === "_" ? "primary" : "secondary");
+      var html = `<div class='inline-block mx-1'><span class='badge ${divclass}' style='cursor:pointer' onclick='SearchTag("${tag.name}")'>${tag.name}</span></div>`;
+      return tot + html;
+    }, "");
+  }
+  return ret;
+}
+
+function InitializeRunsTable() {
   table = new Tabulator('#runs_table', {
     layout: "fitColumns",
     pagination: "local",
     paginationSize: 24, // magic number based on my screen size
     columns:
         [
-          {title: "Detail", width:70, formatter:detailButton, vertAlign:"middle", hozAlign:"center", headerHozAlign:"center", headerSort:false},
-          {title: "Run ID", width: 90, field: "run_id", sorter:"number", vertAlign:"middle", headerHozAlign:"center", hozAlign:"right" },
-          {title: "Mode", field: "mode", vertAlign:"middle", hozAlign:"center", headerHozAlign:"center"},
-          {title: "User", field: "user", vertAlign:"middle", hozAlign:"center", headerHozAlign:"center"},
-          {title: 'Start (UTC)', field: "start", vertAlign:"middle", hozAlign:"center", headerHozAlign:"center"},
-          {title: 'Length', width:90, field: "end", formatter:getRunLength,  vertAlign:"middle", hozAlign:"center", headerHozAlign:"center"},
-          {title: 'Tags', field: 'tags',  vertAlign:"middle", hozAlign:"center", headerHozAlign:"center"},
-          {title: 'Newest Comment', field: 'comment', vertAlign:"middle" , hozAlign:"center", headerHozAlign:"center"}
+          {
+            title: "Detail",
+            width: 70,
+            formatter: detailButton,
+            vertAlign: "middle",
+            hozAlign: "center",
+            headerHozAlign: "center",
+            headerSort: false
+          },
+          {
+            title: "Run ID",
+            width: 90,
+            field: "run_id",
+            sorter: "number",
+            vertAlign: "middle",
+            headerHozAlign: "center",
+            hozAlign: "right"
+          },
+          {title: "Mode", field: "mode", vertAlign: "middle", hozAlign: "center", headerHozAlign: "center"},
+          {title: "User", field: "user", vertAlign: "middle", hozAlign: "center", headerHozAlign: "center"},
+          {title: 'Start (UTC)', field: "start", vertAlign: "middle", hozAlign: "center", headerHozAlign: "center"},
+          {
+            title: 'Length',
+            width: 90,
+            field: "end",
+            formatter: getRunLength,
+            vertAlign: "middle",
+            hozAlign: "center",
+            headerHozAlign: "center"
+          },
+          {
+            title: 'Tags',
+            field: 'tags',
+            formatter: getTags,
+            vertAlign: "middle",
+            hozAlign: "center",
+            headerHozAlign: "center"
+          },
+          {title: 'Newest Comment', field: 'comment', vertAlign: "middle", hozAlign: "center", headerHozAlign: "center"}
         ],
   });
   table.setSort([
-    {column:"start", dir:"desc"},
+    {column: "start", dir: "desc"},
   ]);
-  $('#datepicker_from').change(function() {
+  $('#datepicker_from').change(function () {
     UpdateRunsTable($('#datepicker_from').val(), $('#datepicker_to').val());
   });
-  $('#datepicker_to').change(function() {
+  $('#datepicker_to').change(function () {
     UpdateRunsTable($('#datepicker_from').val(), $('#datepicker_to').val());
   });
-  $('#add_tag_detail_button').click( function () {
+  $('#add_tag_detail_button').click(function () {
     var tag = $("#newtag").val();
-    if(typeof tag ==="undefined" || tag == null || tag == '') {
+    if (typeof tag === "undefined" || tag == null || tag == '') {
       alert('Please specify a tag');
     } else if (tag.includes(' ')) {
       alert('Tags cannot include spaces');
-    } else{
+    } else {
       if (tag === 'flash') document.getElementById("flash_whoa").play();
-      var runs = [];
-      runs.push($("#detail_Number").html());
-      var timelimit = 24*3600*1000; // one day
-      if (tag === 'abandon') {
-        if (new Date() - new Date($("#detail_Start")) > timelimit && $("#detail_bootstrax") !== "failed") {
-          // can't abandon unfailed runs older than one day
-          alert("You can't abandon this run");
-          return;
-        }
-      }
-      if(runs.length>0 && typeof runs[0] !== "undefined") {
+      var run = ($("#detail_Number").html());
+      var mode = ($("#detail_Mode").html());
+      if (typeof run !== "undefined" && typeof mode !== "undefined") {
         $.ajax({
           type: "POST",
-          url: "runsui/addtags",
-          data: {"version": SCRIPT_VERSION, "runs": runs, "tag": tag, "user": "web user"},
+          url: "runsui/addtag",
+          data: {"version": SCRIPT_VERSION, "runid": run, "mode": mode, "tag": tag, "user": "web user"},
           success: (data) => {
             if (typeof data.err != 'undefined') alert(data.err);
-            $("#newtag").val(""); ShowDetail(runs[0]); table.ajax.reload();},
-          error:   function(jqXHR, textStatus, errorThrown) {
+            $("#newtag").val("");
+            ShowDetail(run, mode);
+            table.ajax.reload();
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
             alert("Error, status = " + textStatus + ", " +
-              "error thrown: " + errorThrown
+                "error thrown: " + errorThrown
             );
           }
         });
       }
     }
   });
-  $('#add_comment_detail_button').click( function () {
+  $('#add_comment_detail_button').click(function () {
     var comment = $("#newcomment").val();
-    if(typeof comment ==="undefined")
+    if (typeof comment === "undefined")
       console.log("No comment!")
-    else{
-      var runs = [];
-      runs.push($("#detail_Number").html());
-      if(runs.length>0 && typeof runs[0] !== "undefined")
+    else {
+      var run = ($("#detail_Number").html());
+      var mode = ($("#detail_Mode").html());
+      if (typeof run !== "undefined" && typeof mode !== "undefined") {
         $.ajax({
           type: "POST",
           url: "runsui/addcomment",
-          data: {"runs": runs, "comment": comment, version: SCRIPT_VERSION},
-          success: (data) => {if (typeof data.err != 'undefined') alert(data.err); $("#newcomment").val(""); ShowDetail(runs[0]); table.ajax.reload();},
-          error:   function(jqXHR, textStatus, errorThrown) {
+          data: {"version": SCRIPT_VERSION, "runid": run, "mode": mode, "comment": comment, "user": "web user"},
+          success: (data) => {
+            if (typeof data.err != 'undefined') alert(data.err);
+            $("#newcomment").val("");
+            ShowDetail(run, mode);
+            table.ajax.reload();
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
             alert("Error, status = " + textStatus + ", " +
-              "error thrown: " + errorThrown
+                "error thrown: " + errorThrown
             );
           }
         });
+      }
     }
-
   });
 }
 
@@ -138,15 +181,15 @@ function UpdateRunsTable(from, to, conditions) {
   table.setData(`runsui/get_runs_table${conds}`, {limit: '500'});
 }
 
-function RemoveTag(run, user, tag){
+function RemoveTag(run, mode, user, tag){
   // Remove ALL tags with a given text string
-  if(typeof run === 'undefined' || typeof user === 'undefined' || typeof tag === 'undefined')
+  if(typeof run === 'undefined' || typeof mode === 'undefined' || typeof user === 'undefined' || typeof tag === 'undefined')
     return;
   $.ajax({
     type: "POST",
     url: "runsui/removetag",
-    data: {"run": run, "user": user, "tag": tag, version: SCRIPT_VERSION},
-    success: function(data){ if (typeof data.err != 'undefined') alert(data.err); ShowDetail(run); document.table.ajax.reload();},
+    data: {"run": run, "mode": mode, "user": user, "tag": tag, version: SCRIPT_VERSION},
+    success: function(data){ if (typeof data.err != 'undefined') alert(data.err); ShowDetail(run, mode);},
     error: function(jqXHR, textStatus, errorThrown){
       alert("Error, status = " +textStatus + ", " + "error thrown: " + errorThrown);
     }
@@ -169,7 +212,7 @@ function ShowDetail(run, mode){
       var row = `<tr><td>${tag.name}</td>`;
       row += `<td>${tag.user}</td>`;
       row += `<td>${tag.date.substring(0, 16).replace('T', ' ')}</td>`;
-      row += `<td><button onclick='RemoveTag("${data.number}", "${tag.user}", "${tag.name}")' class='btn btn-warning'>Remove tag</button></td></tr>`;
+      row += `<td><button onclick='RemoveTag("${data.run_id}", "${data.mode}", "${tag.user}", "${tag.name}")' class='btn btn-warning'>Remove tag</button></td></tr>`;
       return total + row;
     }, ""));
 

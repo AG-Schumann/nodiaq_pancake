@@ -53,8 +53,9 @@ router.get('/get_run_doc', common.ensureAuthenticated, function(req, res){
   .catch(err => {console.log(err.message); return res.json({});});
 });
 
-router.post('/addtags', common.ensureAuthenticated, function(req, res){
-  var runs = req.body.runs;
+router.post('/addtag', common.ensureAuthenticated, function(req, res){
+  var run = req.body.runid;
+  var mode = req.body.mode;
   var tag = req.body.tag;
   if (typeof req.body.version == 'undefined' || req.body.version != SCRIPT_VERSION)
     return res.json({err: "Please hard-reload your page (shift-f5 or equivalent)"});
@@ -66,30 +67,26 @@ router.post('/addtags', common.ensureAuthenticated, function(req, res){
   }
 
   // Convert runs to int
-  var runsint = runs.map(parseInt);
+  var runsint = parseInt(run);
   // Update many
-  var query = {number: {$in: runsint}, 'tags.name': {$ne: tag}};
-  var update = {$push: {tags: {date: new Date(), user: user, name: tag}}};
-  var opts = {multi: true};
-  req.runs_coll.update(query, update, opts)
+  var query = {'run_id': runsint, 'mode': mode};
+  var update = {$addToSet: {tags: {date: new Date(), user: user, name: tag}}};
+  req.runs_coll.update(query, update)
   .then( () => res.status(200).json({}))
   .catch(err => {console.log(err.message); return res.status(200).json({err: err.message});});
 });
 
 router.post('/removetag', common.ensureAuthenticated, function(req, res){
   var run = req.body.run;
+  var mode = req.body.mode;
   var tag = req.body.tag;
   var tag_user = req.body.user;
   if (typeof req.body.version == 'undefined' || req.body.version != SCRIPT_VERSION)
     return res.json({err: "Please hard-reload your page (shift-f5 or equivalent)"});
-
   if (tag[0] === '_') { // underscore tags are protected
     return res.sendStatus(403);
   }
-  // Convert runs to int
-  runint = parseInt(run, 10);
-  // Update one
-  var query = {number: runint};
+  var query = {'run_id': parseInt(run, 10), 'mode': mode};
   var update = {$pull: {tags: {name: tag, user: tag_user}},
     $push: {deleted_tags: {name: tag, user: tag_user, deleted_by: req.user.username, date: new Date()}}};
   req.runs_coll.update(query, update)
@@ -98,25 +95,22 @@ router.post('/removetag', common.ensureAuthenticated, function(req, res){
 });
 
 router.post('/addcomment', common.ensureAuthenticated, function(req, res){
-  var runs = req.body.runs;
+  var run = req.body.runid;
+  var mode = req.body.mode;
   var comment = req.body.comment;
-  var user = req.user.username;
-
   if (typeof req.body.version == 'undefined' || req.body.version != SCRIPT_VERSION)
     return res.json({err: "Please hard-reload your page (shift-f5 or equivalent)"});
-
+  var user = req.user.username;
   if (typeof user == 'undefined' || user == 'not set') {
     return res.json({err: "Invalid user credentials"});
   }
   // Convert runs to int
-  var runsint = runs.map(parseInt);
-  // Update many
-  var query = {number: {$in: runsint}};
-  var update = {$push: {comments: {date: new Date(), user: user, comment: comment}}};
-  var opts = {multi: true};
-  req.runs_coll.update(query, update, opts)
-  .then( () => res.status(200).json({}))
-  .catch(err => {console.log(err.message); return res.status(200).json({err: err.message});});
+  var runsint = parseInt(run);
+  var query = {'run_id': runsint, 'mode': mode};
+  var update = {$push: {'comments': {'date': new Date(), 'user': user, 'comment': comment}}};
+  req.runs_coll.updateOne(query, update)
+      .then( () => res.status(200).json({}))
+      .catch(err => {console.log(err.message); return res.status(200).json({err: err.message});});
 });
 
 router.get('/runsfractions', common.ensureAuthenticated, function(req, res){
