@@ -17,24 +17,22 @@ router.get('/get_runs_table', common.ensureAuthenticated, function getData (req,
   if (typeof req.query['conditions'] !== 'undefined')
     conditions = JSON.parse(req.query['conditions']);
   // Date filtering
-  if (req.query['date_min'] !== undefined) {
-    if (req.query['date_min'] !== '' &&
-        req.query['date_max'] == '' &&
-        !('start' in Object.keys(conditions)))
-      conditions['start'] = {"$gt": new Date(req.query['date_min'])};
-    else if (req.query['date_min'] !== '' &&
-        req.query['date_max'] !== '' &&
-        !('start' in Object.keys(conditions)))
+  if (req.query['date_min'] !== undefined && !('start' in Object.keys(conditions))) {
+    if (req.query['date_max'] !== undefined) {
+      // both min and max
       conditions['start'] = {
         "$gt": new Date(req.query['date_min']),
         "$lt": new Date(req.query['date_max'])
       };
-    else if (req.query['date_min'] == '' &&
-        req.query['date_max'] !== '' &&
-        !('start' in Object.keys(conditions)))
-      conditions['start'] = {"$lt": new Date(req.query['date_max'])};
+    } else {
+      // only min
+      conditions['start'] = {"$gt": new Date(req.query['date_min'])};
+    }
   }
-
+  else if (req.query['date_max'] !== undefined)  {
+    //only max
+    conditions['start'] = {"$lt": new Date(req.query['date_max'])};
+  }
   req.db.get('runs').find(conditions)
       .then(docs => res.json(docs))
       .catch(err => {console.log(err.message); return res.json([]);});

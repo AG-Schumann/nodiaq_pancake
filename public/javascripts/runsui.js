@@ -3,21 +3,20 @@ var table;
 
 function SearchTag(name){
   $("#mongoquery").val(`{"tags.name": "${name}"}`);
-  CheckMongoQuery();
+  UpdateRunsTable();
 }
 
-function CheckMongoQuery(){
+function VerifyMongoQuery() {
   var query = $("#mongoquery").val();
-  if(query === "")
+  if (query === "")
     query = "{}";
-  try{JSON.parse(query);}
-  catch(e){
-    alert("Your mongo query is not valid JSON!");
-    return;
+  try {
+    JSON.parse(query);
+  } catch (e) {
+    alert("Your mongo query is not valid JSON! Maybe you used \'\' instead of \"\"?");
+    return false;
   }
-  document.datatable_options['ajax']['data'] = {"conditions": query};
-  $(document.datatable_div).DataTable().destroy();
-  $(document.datatable_div).DataTable(document.datatable_options);
+  return true;
 }
 
 var detailButton = function(cell) {
@@ -122,10 +121,10 @@ function InitializeRunsTable() {
     {column: "start", dir: "desc"},
   ]);
   $('#datepicker_from').change(function () {
-    UpdateRunsTable($('#datepicker_from').val(), $('#datepicker_to').val());
+    UpdateRunsTable();
   });
   $('#datepicker_to').change(function () {
-    UpdateRunsTable($('#datepicker_from').val(), $('#datepicker_to').val());
+    UpdateRunsTable();
   });
   $('#add_tag_detail_button').click(function () {
     var tag = $("#newtag").val();
@@ -144,6 +143,7 @@ function InitializeRunsTable() {
           data: {"version": SCRIPT_VERSION, "runid": run, "mode": mode, "tag": tag, "user": "web user"},
           success: (data) => {
             if (typeof data.err != 'undefined') alert(data.err);
+            UpdateRunsTable();
             $("#newtag").val("");
             ShowDetail(run, mode);
             table.ajax.reload();
@@ -171,6 +171,7 @@ function InitializeRunsTable() {
           data: {"version": SCRIPT_VERSION, "runid": run, "mode": mode, "comment": comment, "user": "web user"},
           success: (data) => {
             if (typeof data.err != 'undefined') alert(data.err);
+            UpdateRunsTable();
             $("#newcomment").val("");
             ShowDetail(run, mode);
             table.ajax.reload();
@@ -186,15 +187,19 @@ function InitializeRunsTable() {
   });
 }
 
-function UpdateRunsTable(from, to, conditions) {
+function UpdateRunsTable() {
+  var from = $('#datepicker_from').val();
+  var to = $('#datepicker_to').val();
+  var query = $("#mongoquery").val();
   var conds = '';
-  if (from != undefined)
+  if (from !== '')
     conds.length ? conds += `&date_min=${from}` : conds += `?date_min=${from}`;
-  if (to != undefined)
+  if (to !== '')
     conds.length ? conds += `&date_max=${to}` : conds += `?date_max=${to}`;
-  if (conditions != undefined)
-    conds.length ? conds += `&conditions=${conditions}` : conds += `?conditions=${conditions}`;
-
+  if (query !== '') {
+    if (VerifyMongoQuery(query))
+      conds.length ? conds += `&conditions=${query}` : conds += `?conditions=${query}`;
+  }
   table.setData(`runsui/get_runs_table${conds}`, {limit: '500'});
 }
 
@@ -206,7 +211,7 @@ function RemoveTag(run, mode, user, tag){
     type: "POST",
     url: "runsui/removetag",
     data: {"run": run, "mode": mode, "user": user, "tag": tag, version: SCRIPT_VERSION},
-    success: function(data){ if (typeof data.err != 'undefined') alert(data.err); ShowDetail(run, mode);},
+    success: function(data){ if (typeof data.err != 'undefined') alert(data.err); UpdateRunsTable(); ShowDetail(run, mode);},
     error: function(jqXHR, textStatus, errorThrown){
       alert("Error, status = " +textStatus + ", " + "error thrown: " + errorThrown);
     }
