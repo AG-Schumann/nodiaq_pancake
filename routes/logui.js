@@ -1,4 +1,4 @@
-// routes/logui.js
+// routes/logui_script.js
 var express = require("express");
 var url = require("url");
 var router = express.Router();

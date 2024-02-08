@@ -12,6 +12,7 @@
     height:140px;
     overflow: clip;
 }
+
 .det_card_noheight{
     padding: 10px;
     background-color: white;
@@ -19,27 +20,13 @@
     border: solid 1px #cccccc;
 }
 
-
-.fontscale_header{
- 	font-size: 4.0em;
- }
- .fontscale_status{
- 	font-size: 2.0em;
- }
 .fontscale{
  	font-size: 2.0em;
 }
-.fontscale_small{
-    font-size: 1.0em;
-}
-
-/* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
 
 #content {
+    padding: 0px 5px;
     width: calc(100% - 50px);
-    padding: 20px;
     min-height: 100vh;
     transition: all 0.3s;
     left: 50px;
@@ -47,18 +34,10 @@
     overflow-y: auto;
     /*background-color: #eee;*/
 }
-#content.active{
-    left: 250px;
-    width: calc(100% - 250px);
-
-}
-
-/* SIDEBAR ON MOBILE */
 
 /* I put myself into a bit of a hole. Default state is 'active' */
 #errorbar.active{
     display:block;
-    /*height: 40px;*/
     width:calc(100% + 11px);
     background-color: #cc0505;
     margin-left: -5px;
@@ -74,121 +53,34 @@
 #errorbar a{
     color: #9FB3FF;
 }
-#topbar.active {
-	display: block;
-	height: 150px;
-	width: 100vw;
-	background: #0c1178;
-	border-bottom: 1px solid #333;
--webkit-transition: height 0.3s ease-in-out;
-    -moz-transition: height 0.3s ease-in-out;
-    -o-transition: height 0.3s ease-in-out;
-    transition: height 0.3s ease-in-out;
-}
-#topbar{
-	height: 0;
-	overflow: hidden;
-}
-#topbar .sidebarCollapse{
-	height:150px;
-	width:150px;
-}
-#topbar .sidebarCollapse span{
-	    height: 10px;
-}
-#topbar .sidebarCollapse span:first-of-type,
-#topbar .sidebarCollapse span:nth-of-type(2),
-#topbar .sidebarCollapse span:last-of-type {
-        margin: 20px auto;
- }
- #topbar .pagetitle{
- 	height:100%;
- 	float: right;
- 	font-size: 6.1em;
- 	padding-right: 10%;
- 	color: white;
- }
- .desktop_title{
- 	display: none;
- }
-.desktop_title div{
-  padding-left:150px;
-  padding-top:25px;
-}
 
 #sidebar {
     width:100%;
     display: block;
     overflow-y: scroll;
-    /*background: #7386D5;*/
-    /*background: #0c1178;
-    color: #fff;*/
-    color: #666;
-    background: #ccc;
     height: 100vh;
-	-webkit-transition: height 0.3s ease-in-out;
-    -moz-transition: height 0.3s ease-in-out;
-    -o-transition: height 0.3s ease-in-out;
-    transition: height 0.3s ease-in-out;
 }
-#sidebar.active{
-	/*display: none;*/
-	height: 0px !important;
-	overflow: hidden;
-	background: #0c1178;  
-        color:#fff;
-}
-#sidebar.active ul li a{
-  color: #fff;
-}
+
 #sidebar ul li a {
-	color: #333;
+	color: #fff;
     padding: 10px;
     font-size: 3.1em;
     display: block;
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s;
+    text-decoration: none;
 	}
+
 #sidebar ul li a:hover {
     color: #7386D5;
     background: #eee;
-    text-decoration: none;
 }
-#sidebar.active ul ul a {
-    padding: 10px !important;
-}
-#sidebar ul li a i {
-    	margin-right: 10px;
-    }
-#sidebar:not(.active) .logo{
-	display: none;
-}
-#sidebar .second_logo{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
-    max-height: 80px;
-}
-#sidebar.active .logo{
-    display: none;
-}
-   
-.headertitle{
-    width:40%;
-    float:left;
-    top:0;
-    left:0;
-    position:absolute;
-    padding-top: 6px;
-}
-
 
 /* DESKTOP LARGER SCALE */
-@media 
+@media
 only screen and (min-width: 540px) and (max-resolution: 120dpi),
 only screen and (min-width: 540px) and (min-resolution: 120dpi),
-only screen and (min-width: 1081px) 
+only screen and (min-width: 1081px)
 {
     .main-container{
 	height: 100%;
@@ -240,16 +132,7 @@ only screen and (min-width: 1081px)
     float: left;
     height: 58px;
 }
-#sidebar ul li.sectionlabel{
-    width:100%;
-    float: left;
-    height: 30px;
-    margin-bottom: 10px;
 
-    background-image: linear-gradient(to right, rgba(238, 238, 238), rgba(214, 214, 214, 1) , rgba(238, 238, 238));
-
-
-}
 #sidebar ul li.signout{
     width: 100%;
     float: left;
@@ -263,7 +146,7 @@ only screen and (min-width: 1081px)
  #sidebar ul li.active>a, a[aria-expanded="true"] {
      color: #0e0e75;
      background: #eee;
- /*color: #eee;                                                                                   
+ /*color: #eee;
    background: #0c1178;*/
  }
  #sidebar.active ul li a {
@@ -271,34 +154,12 @@ only screen and (min-width: 1081px)
      text-align: center;
      font-size: 0.65em;
  }
-#sidebar.active ul li a span.extralabel{
-    display: none;
-}
-#sidebar ul li a span.extralabel{
-    margin-left: 0px;
-    font-size: .75em;
-    display: block;
-}
-    
 
  #sidebar ul li a {
      font-size: 1.1em;
      height: 100%;
- }    
- .sidebarCollapse {
-     width: 40px;
-     height: 40px;
  }
- .sidebarCollapse span {
-     width: 80%;
-     height: 2px;
-    }
- .sidebarCollapse span:first-of-type,
- .sidebarCollapse span:nth-of-type(2),
- .sidebarCollapse span:last-of-type {	
-     margin: 5px auto;
- }
- 
+
  /* Main styling. It's 250 px by default but 80px 'active' */
  #topbar {
      display: none;
@@ -315,7 +176,7 @@ only screen and (min-width: 1081px)
      font-size: 1.8em;
      margin-bottom: 5px;
  }
- 
+
 
 	/* CTAs are things that only appear when expanded */
 ul.CTAs {
@@ -356,15 +217,7 @@ ul.CTAs li a {
     background-color: #ccc;
     height: 40px;
 }
- .sidebarCollapse.active span:first-of-type {
-        transform: rotate(45deg) translate(2px, 2px);
- }
- .sidebarCollapse.active span:nth-of-type(2) {
-        opacity: 0;
- }
- .sidebarCollapse.active span:last-of-type {
-        transform: rotate(-45deg) translate(1px, -1px);
- }
+
 
  #sidebar {
      margin-top: 0px;
@@ -372,7 +225,7 @@ ul.CTAs li a {
      min-width: 350px;
      display: block;
      /*max-width: 250px;*/
-     
+
      /*background: #7386D5;*/
      background: #eee;
     color: #333;
@@ -380,7 +233,7 @@ ul.CTAs li a {
     height: 100vh !important;
     overflow-y: auto;
 	}
-    #sidebar.active {	
+    #sidebar.active {
     	display: block;
 	width:100%;
 	min-width: 50px;
@@ -411,77 +264,8 @@ ul.CTAs li a {
     /* end main styling */
 
 	/* Sidebar links are white and centered and colored when active */
-	
-
-
-
-}
-
-
-/*
- * 
- * NON-SIDEBAR PAGE STYLING
- * 
- * 
- */
-.host_detail{
-    width: 100%;
-    margin-top: 5px;
-    border: 1px solid #cccccc;
-}
-.reader_detail{
-    /*width: 100%;*/
-    min-height: 105px;
-    margin-top: 5px;
-    font-size:12px;
-    border: 1px solid #cccccc;    
-}
-.detector_detail{
-    width: 100%;
-    height: 40px;
-    margin-top: 5px;
-    border: 1px solid #cccccc;
-}
-.reader_header{
-    width:calc(100% + 2px);
-    height: 30px;
-    margin: -1px;
-    margin-bottom:1px;
-    padding: 0;
-    padding-left:5px;
-    padding-right:5px;
-    border: 1px solid #cccccc;
-    border-top: 0px;
-    overflow-x: clip;
-}
-
-.reader_chartdiv{
-    width: 100%;
-    height: 100px;
-    padding: 0;
-    margin: 0;
-}
-
-.two-panel-div{
-    height: calc(100vh - 52px);
-    width: 100%;
-    /*margin-left: 1px;
-    margin-right:1px;*/
-    border: 1px solid #cccccc;
-    padding: 3px;
-    background-color: white;
-}
-
-.json_detail{
-	height: calc(100vh - 25%);
-	width: calc(100vh - 30%);
 }
 
 .form-label{
     color: #5992c2;
-}
-
-table.dataTable tbody tr.selected {
-    color: white !important;
-    background-color: #06d6a0 !important;
 }

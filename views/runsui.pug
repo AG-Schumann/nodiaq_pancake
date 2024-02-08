@@ -1,14 +1,13 @@
 extends layout
 
 block extrahead
-  link(rel="stylesheet", href="stylesheets/jquery.dataTables.min.css")
-  link(rel="stylesheet", href="stylesheets/tabulator.min.css")
-  script(src="javascripts/moment.min.js", type="text/javascript")
-  script(src="javascripts/runsui.js", type="text/javascript")
-  script(src="javascripts/tabulator.min.js" type="text/javascript")
+  script(src="/modules/moment/min/moment.min.js", type="text/javascript")
+  script(src="javascripts/runsui_script.js", type="text/javascript")
+  script(src="/modules/tabulator-tables/dist/js/tabulator.js" type="text/javascript")
   script(type="text/javascript" src="https://rawgithub.com/yesmeck/jquery-jsonview/master/dist/jquery.jsonview.js")
 
   link(rel="stylesheet", href="stylesheets/runs_style.css")
+  link(rel="stylesheet", href="/modules/tabulator-tables/dist/css/tabulator.css")
   link(rel="stylesheet" href="https://rawgithub.com/yesmeck/jquery-jsonview/master/dist/jquery.jsonview.css")
 
 block content

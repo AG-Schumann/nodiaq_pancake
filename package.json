@@ -16,7 +16,7 @@
 		"http-errors": "~1.6.2",
 		"jquery": "^3.4.1",
 		"jsoneditor": "^9.0.3",
-		"moment": "^2.24.0",
+		"moment": "^2.30.1",
 		"mongodb": "^3.5.9",
 		"mongodb-core": "^3.2.7",
 		"monk": "^7.3.0",
@@ -29,6 +29,6 @@
 		"request": "^2.88.2",
 		"serve-favicon": "^2.5.0",
 		"sessionstore": "^1.3.7",
-		"tabulator-tables": "^5.5.4"
+		"tabulator-tables": "=4.9.3"
 	}
 }

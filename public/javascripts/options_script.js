@@ -1,4 +1,4 @@
-// public/javascripts/options.js
+// public/javascripts/options_script.js
 var detectors_local = {};
 const SCRIPT_VERSION = '20210622';
 

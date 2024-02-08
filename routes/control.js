@@ -1,4 +1,4 @@
-// routes.control.js
+// routes.control_script.js
 var express = require("express");
 var url = require("url");
 var router = express.Router();

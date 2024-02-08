@@ -1,5 +1,4 @@
 var express = require("express");
-var url = require("url");
 var router = express.Router();
 var common = require('./common');
 

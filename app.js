@@ -48,13 +48,6 @@ app.use(passport.session());
 //require("./mongo_session_cache.js")
 //require("./passport_session.js")
 
-
-// Aliases for paths to node_modules (you might want to just copy .mins to static folder)
-app.use('/bs', express.static(__dirname + '/node_modules/bootstrap3/dist/'));
-app.use('/jq', express.static(__dirname + '/node_modules/jquery/dist/'));
-app.use('/je', express.static(__dirname + '/node_modules/jsoneditor/dist/'));
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -82,7 +75,6 @@ app.use(function(req, res, next) {
     req.template_info_base = {
       pagetitle: 'Pancake DAQ',
       detectors: [['tpc', 'PMT array']],
-      headertitle: 'Pancake Data Acquisition',
   }
   next();
 });

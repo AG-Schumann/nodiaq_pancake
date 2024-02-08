@@ -245,7 +245,7 @@ function ShowDetail(run, mode){
       return total + row;
     }, ""));
     $("#detail_JSON").JSONView(data, {"collapsed": true});
-    $("#runsModal").modal();
+    $("#runsModal").modal('show');
   });
 
 }

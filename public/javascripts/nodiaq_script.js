@@ -1,5 +1,4 @@
 var statii = ["IDLE", "ARMING", "ARMED", "RUNNING", "ERROR", "UNKNOWN"];
-var detectors = {};
 
 function FillDetectorInfo(){
   $.getJSON("status/get_detector_status", function(data){

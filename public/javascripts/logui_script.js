@@ -105,5 +105,6 @@ function UpdateLogTable(DOM){
     }
   }
   get_me = get_me.slice(0, -1); // remove last comma
+
   table.setData('logui/getMessages?limit=500'+get_me);
 }

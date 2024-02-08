@@ -1,9 +1,9 @@
 extends layout
 
 block extrahead
-  script(src="javascripts/overview.js", type="text/javascript")
-  script(src="javascripts/status_scripts.js", type="text/javascript")
-  link(rel="stylesheet" href="/stylesheets/overview.css")
+  script(src="javascripts/overview_script.js", type="text/javascript")
+  script(src="javascripts/status_script.js", type="text/javascript")
+  link(rel="stylesheet" href="/stylesheets/overview_style.css")
 
 block content
   div.main-container(style='background-color:#eeeeee;margin:-5px;padding:15px;height:100vh')
@@ -33,16 +33,13 @@ block content
       div.col-md-6.col-xs-12
         div.det_card_noheight
           strong Run History &nbsp;&nbsp;
-          div.btn-group.btn-group-toggle#pie_button(data-toggle="buttons")
-            label.btn.btn-secondary
-              input(type="radio" name="options" id="option1" autocomplete="off" value=10)
-              span 10 days
-            label.btn.btn-secondary.active
-              input(type="radio" name="options" id="option2" autocomplete="off" value=30 checked)
-              span 30 days
-            label.btn.btn-secondary
-              input(type="radio" name="options" id="option3" autocomplete="off" value=90)
-              span 90 days
+          .btn-group#pie_button(role='group')
+            input#option1.btn-check(type='radio' name='btnradio' autocomplete='off' value=10)
+            label.btn.btn-outline-secondary(for='option1') 10 days
+            input#option2.btn-check(type='radio' name='btnradio' autocomplete='off' value=30 checked='')
+            label.btn.btn-outline-secondary(for='option2') 30 days
+            input#option3.btn-check(type='radio' name='btnradio' autocomplete='off' value=90)
+            label.btn.btn-outline-secondary(for='option3') 90 days
           div#pie_box
     br
     div.row

@@ -3,7 +3,6 @@ var express = require('express');
 var url = require('url');
 var ObjectId = require('mongodb').ObjectID;
 var router = express.Router();
-var axios = require('axios');
 var common = require('./common');
 
 
