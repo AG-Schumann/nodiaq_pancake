@@ -16,14 +16,14 @@ function CheckForErrors(){
     if(data['error_docs']>0){
       if(!($("#errorbar").hasClass("active")))
         $("#errorbar").addClass("active");
-      document.flashDatButton=true;
-      $('.main-container').css('height', 'calc(100vh-'+$('#errorbar').height()+'px)');
+        let height = $('#errorbar').height() + 10;
+      $('.main-container').css('height', 'calc(100vh - ' + height + 'px)');
+      //$('.main-container').css('height', 'calc(100vh - 100px)');
 
     }
     else{
       if($("#errorbar").hasClass("active"))
         $("#errorbar").removeClass('active');
-      document.flashDatButton=false;
     }
   });
 }

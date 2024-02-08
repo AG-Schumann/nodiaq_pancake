@@ -1,4 +1,11 @@
 /* Buttons get recolored in our color scheme */
+
+.main-container{
+    background-color:#eeeeee;
+    margin:0px -5px;
+    padding:15px;
+    height:100vh;
+}
 .btn.btn-default{
 	background-color: #0c1178;
 	color: #ddd;
@@ -38,14 +45,13 @@
 /* I put myself into a bit of a hole. Default state is 'active' */
 #errorbar.active{
     display:block;
-    width:calc(100% + 11px);
     background-color: #cc0505;
     margin-left: -5px;
     margin-right: -5px;
     color: #eeeeee;
     padding-top: 5px;
     padding-bottom: 5px;
-    padding-left: 10px;
+    padding-left: 12px;
 }
 #errorbar{
     display: none;
@@ -82,13 +88,6 @@ only screen and (min-width: 540px) and (max-resolution: 120dpi),
 only screen and (min-width: 540px) and (min-resolution: 120dpi),
 only screen and (min-width: 1081px)
 {
-    .main-container{
-	height: 100%;
-	width:100%;
-	position: absolute;
-      /*overflow-y: auto;*/
-      overflow-x: hidden;
-  }
     .wrapper {
 
 	display: flex;

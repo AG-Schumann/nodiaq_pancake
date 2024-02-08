@@ -55,11 +55,12 @@ var getTags = function(cell) {
 var getNewestComment = function(cell) {
   var ret = '';
   var comments = cell.getValue();
-  if (typeof(comments) != "undefined" && comments.length>0)
-    ret +=  comments[comments.length-1]["comment"];
-  if (comments.length>1) {
-    ret += ` + ${comments.length - 1} additonal comment`;
-    (comments.length > 2) && (ret += 's');
+  if (typeof(comments) != "undefined" && comments.length>0) {
+    ret += comments[comments.length - 1]["comment"];
+    if (comments.length > 1) {
+      ret += ` + ${comments.length - 1} additonal comment`;
+      (comments.length > 2) && (ret += 's');
+    }
   }
   return ret;
 }

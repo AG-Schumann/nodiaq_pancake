@@ -39,23 +39,18 @@ function objectIdWithTimestamp(timestamp) {
 router.get('/get_reader_history', common.ensureAuthenticated, function(req,res){
   // TODO: I don't even want to start on this right now
   var q = url.parse(req.url, true).query;
-  var reader = q.reader;
   var limit  = parseInt(q.limit);
   var resolution = parseInt(q.res);
 
   if(typeof limit == 'undefined')
     limit = 86400; // 1d into past
-  if(typeof reader == 'undefined')
-    return res.json({});
   if(typeof res == 'undefined')
     resolution = 60; //1m
-
   var t = new Date() - limit*1000;
   var id = objectIdWithTimestamp(t);
   // Fancy-pants aggregation to take binning into account
-  var query = {"host": reader, "_id": {"$gt": id}};
   req.db.get('status').aggregate([
-    {$match: query},
+    {$match: {"_id": {"$gt": id}}},
     {$project: {
       time_bin: {
         $trunc: {

@@ -11,7 +11,7 @@ block extrahead
   link(rel="stylesheet" href="https://rawgithub.com/yesmeck/jquery-jsonview/master/dist/jquery.jsonview.css")
 
 block content
-  div.main-container(style="height:100%")
+  div.main-container
     audio#flash_whoa(src="images/flash_whoa.mp3")
     - var tags = ['prioritize', 'messy', 'flash', 'warm_spot', 'hot_spot', 'ramp_up', 'ramp_down'];
     div.row.det_card_noheight
@@ -25,11 +25,11 @@ block content
     span Note: the Start and End times are given in 
     strong UTC
     br
-    span.date-label#date-label-from From:
+    span.date-label#date-label-from From: &nbsp
       input.date_range_filter.date#datepicker_from(type='date')
-    span.date-label#date-label-to To:
+    span.date-label#date-label-to To: &nbsp
       input.date_range_filter.date#datepicker_to(type='date')
-    div.det_card_noheight#resize_wrapper(style="height:90%;width:100%;background-color:white;padding-top:15px")
+    div.det_card_noheight(style="height:90%;width:100%;background-color:white;padding-top:15px")
       table.nowrap.table-hover(style="background-color:white")#runs_table
   div.modal.fade#runsModal(tabindex="-1" role="dialog")
       div.modal-dialog.modal-lg(role="document")

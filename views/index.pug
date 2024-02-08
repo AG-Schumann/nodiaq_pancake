@@ -2,11 +2,11 @@ extends layout
 
 block extrahead
   script(src="javascripts/overview_script.js", type="text/javascript")
-  script(src="javascripts/status_script.js", type="text/javascript")
   link(rel="stylesheet" href="/stylesheets/overview_style.css")
+  link(rel="stylesheet" href="/stylesheets/custom-select.css")
 
 block content
-  div.main-container(style='background-color:#eeeeee;margin:-5px;padding:15px;height:100vh')
+  div.main-container
     div.row
       div.col-md-6.col-xs-12
         div.row
@@ -44,7 +44,7 @@ block content
     br
     div.row
       div.col-12
-        div.fullsizechart.det_card
+        div.fullsizechart.det_card_noheight
           div.chart_header(style='font-size:12px')
             strong(style='font-size:22px') Status History &nbsp;&nbsp;
             strong(style='font-size:12px') Time: &nbsp;
@@ -55,7 +55,6 @@ block content
               option(value=43200) 12h
               option(value=21600) 6h
               option(value=3600) 1h
-
             strong(style='font-size:12px') &nbsp;&nbsp; Resolution: &nbsp;
             select.cselect#menu_resolution_s(style="width:100px")
               option(value=10) 10s
@@ -63,24 +62,15 @@ block content
               option(value=60 selected) 1m
               option(value=300) 5m
               option(value=600) 10m
-
-            strong(style='font-size:12px') &nbsp;&nbsp; Variable: &nbsp;
-            select.cselect#menu_variable_s(style="width:100px")
-              option(value='rate') Data rate
-              option(value='buff') Buffer size
-
             span &nbsp;&nbsp;
-
-            button.btn.btn-info#update_button(style="height:80%;padding-top:3px" onclick="RedrawRatePlot()") Update
+            button.btn.btn-info#update_button(style="height:80%;padding-top:3px" onclick="DrawRatePlot()") Update
           div.chart_body#rate_chart(style="height:300px")
-      div.col-md-6.col-xs-12
-
-
 
   script.
     $(document).ready(function(){
       DrawActiveLink("#lindex");
       DrawPie("pie_box", 30);
+      DrawRatePlot();
       $("#pie_button :input").change(function() {
          DrawPie("pie_box", $(this).val());
       });

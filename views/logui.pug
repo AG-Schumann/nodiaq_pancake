@@ -5,12 +5,11 @@ block extrahead
   link(rel="stylesheet", href="/modules/tabulator-tables/dist/css/tabulator.css")
 
 block content
-  div.main-container(style="width:99%;padding:25")
-
+  div.main-container
     div.input-group.mb-3#newentry(style='padding-top:5px')
       input.form-control#log_entry_box(type="text", name="entry", placeholder="New Log Entry...")
       div.input-group-append
-        button.btn.btn-outline-secondary(type='submit' onclick="NewMessage()") Enter
+        button.btn.btn-outline-secondary(style='margin-left:10px' type='submit' onclick="NewMessage()") Enter
     div.input-group.mb-3#priority(style='padding-top:5px')
       input#cb_message(style='margin-top:5px' type='checkbox' name='filter_message' checked)
       span &nbsp;Messages&nbsp;&nbsp;&nbsp;

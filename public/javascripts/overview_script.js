@@ -39,3 +39,57 @@ function DrawPie(pie_div, ndays){
   }); // getJSON
 }
 
+function DrawRatePlot(){
+  var history = $("#menu_history_s").val();
+  var resolution = $("#menu_resolution_s").val();
+  var limit = parseInt(history);
+  $.getJSON("status/get_reader_history?limit="+limit+"&res="+resolution, function(data){
+    if (typeof data.err != 'undefined') {
+      console.log("Error: " + data.err);
+      return;
+    }
+    var series = [];
+    var yaxis_label = "MB/s";
+    for (var key in data) {
+      var rates = {
+        "type": "line",
+        "name": key+" rate",
+        "data": data[key]['rate']};
+      series.push(rates);
+    }
+    var chart_opts = {
+      chart: {
+        zoomType: 'xy',
+        //            margin: [5, 5, 20, 80],
+      },
+      plotOptions: {
+        series: {
+          fillOpacity: 0.3,
+          lineWidth: 1
+        },
+      },
+      credits: {
+        enabled: false,
+      },
+      title: {
+        text: '',
+      },
+      xAxis: {
+        type: 'datetime',
+      },
+      yAxis: {
+        title: {
+          text: yaxis_label,
+        },
+        min: 0,
+      },
+      legend: {
+        enabled: true,
+      },
+      series: series,
+    };
+    document.RatePlot = Highcharts.chart('rate_chart', chart_opts);
+  });
+}
+
+
