@@ -30,10 +30,10 @@ nodiaq_light is meant for experiments that run the same DAQ but are much simpler
 ## Authentication System ##
 
 The default user authentication works as follows:
-    -  Users log in with their GitHub ID.
-    -  If they are a public member of the specified `config.github_org`, they will be able to access the website.
+-  Users log in with their GitHub ID.
+-  If they are a public member of the specified `config.github_org`, they will be able to access the website.
 
-You can shut it user management completely by setting `config.use_authentication = true;`
+You can shut off the user management completely by setting `config.use_authentication = false;`
 
 If you want a user management system but can't use the one described above, help yourself! You will probably have to change the following files:
   - `config/passport.js`: Check out [passport.js](https://www.passportjs.org/)
