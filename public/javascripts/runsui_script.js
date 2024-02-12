@@ -21,7 +21,7 @@ function VerifyMongoQuery() {
 
 var detailButton = function(cell) {
   let data = cell.getRow().getData();
-  return `<button style='padding:3px 5px;background-color:#ef476f;color:#eee' class='btn btn-defailt btn-xs' onclick='ShowDetail(${data.run_id}, "${data.mode}")'>show</button>`;
+  return `<button style='padding:3px 5px;background-color:#ef476f;color:#eee' class='btn btn-default btn-sm' onclick='ShowDetail(${data.run_id}, "${data.mode}")'>show</button>`;
 };
 
 var getRunLength = function(cell) {
@@ -66,57 +66,25 @@ var getNewestComment = function(cell) {
 }
 
 function InitializeRunsTable() {
+  Tabulator.prototype.defaultOptions.cellVertAlign = "middle";
+  Tabulator.prototype.defaultOptions.cellHozAlign = "center";
+  Tabulator.prototype.defaultOptions.headerHozAlign = "center";
   table = new Tabulator('#runs_table', {
+    height: '100%',
     layout: "fitColumns",
+    frozenRows: 1,
     pagination: "local",
-    paginationSize: 24, // magic number based on my screen size
-    columns:
-        [
-          {
-            title: "Detail",
-            width: 70,
-            formatter: detailButton,
-            vertAlign: "middle",
-            hozAlign: "center",
-            headerHozAlign: "center",
-            headerSort: false
-          },
-          {
-            title: "Run ID",
-            width: 90,
-            field: "run_id",
-            sorter: "number",
-            vertAlign: "middle",
-            headerHozAlign: "center",
-            hozAlign: "right"
-          },
-          {title: "Mode", field: "mode", vertAlign: "middle", hozAlign: "center", headerHozAlign: "center"},
-          {title: "User", field: "user", vertAlign: "middle", hozAlign: "center", headerHozAlign: "center"},
-          {title: 'Start (UTC)', field: "start", vertAlign: "middle", hozAlign: "center", headerHozAlign: "center"},
-          {
-            title: 'Length',
-            width: 90,
-            field: "end",
-            formatter: getRunLength,
-            vertAlign: "middle",
-            hozAlign: "center",
-            headerHozAlign: "center"
-          },
-          {
-            title: 'Tags',
-            field: 'tags',
-            formatter: getTags,
-            vertAlign: "middle",
-            hozAlign: "center",
-            headerHozAlign: "center"
-          },
-          {title: 'Newest Comment',
-            field: 'comments',
-            formatter: getNewestComment,
-            vertAlign: "middle",
-            hozAlign: "center",
-            headerHozAlign: "center"}
-        ],
+    paginationSize: 24,
+    columns: [
+      {title: 'Detail', formatter: detailButton, width: 80, resizable: false, headerSort:false},
+      {title: 'Run ID', field: 'run_id', width:100},
+      {title: 'Mode', field: 'mode'},
+      {title: 'User', field: 'user'},
+      {title: 'Start (UTC)', field: 'start', width: 210, resizable: false},
+      {title: 'Length', field: "end", formatter: getRunLength, width: 85, resizable: false, headerSort:false},
+      {title: 'Tags', formatter: getTags, headerSort:false},
+      {title: 'Newest Comment', formatter: getNewestComment, headerSort:false}
+    ]
   });
   table.setSort([
     {column: "start", dir: "desc"},

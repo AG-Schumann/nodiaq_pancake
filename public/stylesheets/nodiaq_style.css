@@ -10,6 +10,10 @@
 	background-color: #0c1178;
 	color: #ddd;
 }
+.btn.btn-default:hover{
+    background-color: rgba(12, 17, 120, 0.65);
+    color: #ddd;
+}
 
 .det_card{
     padding: 10px;

@@ -3,7 +3,6 @@ extends layout
 block extrahead
   script(src="javascripts/overview_script.js", type="text/javascript")
   link(rel="stylesheet" href="/stylesheets/overview_style.css")
-  link(rel="stylesheet" href="/stylesheets/custom-select.css")
 
 block content
   div.main-container
@@ -48,7 +47,7 @@ block content
           div.chart_header(style='font-size:12px')
             strong(style='font-size:22px') Status History &nbsp;&nbsp;
             strong(style='font-size:12px') Time: &nbsp;
-            select.cselect#menu_history_s(style="width:100px")
+            select#menu_history_s(style="width:100px")
               option(value=172800) 48h
               option(value=129600) 36h
               option(value=86400 selected) 24h
@@ -56,7 +55,7 @@ block content
               option(value=21600) 6h
               option(value=3600) 1h
             strong(style='font-size:12px') &nbsp;&nbsp; Resolution: &nbsp;
-            select.cselect#menu_resolution_s(style="width:100px")
+            select#menu_resolution_s(style="width:100px")
               option(value=10) 10s
               option(value=30) 30s
               option(value=60 selected) 1m
