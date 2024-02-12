@@ -4,11 +4,12 @@ var config = {};
 // This file contains all the experiment-specific configurations.
 
 // where your website will be running
-config.host = 'localhost';
-config.port = 8901;
+config.host = process.env.NODIAQ_HOST;
+config.port = process.env.NODIAQ_PORT;
 
 // Connection to MongoDB
 config.mongo_uri = process.env.NODIAQ_MONGO_URI
+config.daq_db = process.env.NODIAQ_DAQ_DB
 
 // GitHub Auth
 // If you want to restrict people from changing stuff through the website, set use_authentication=true.
