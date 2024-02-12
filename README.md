@@ -25,6 +25,7 @@ nodiaq_light is meant for experiments that run the same DAQ but are much simpler
     - NODIAQ_GITHUB_CALLBACK_URI
   - **Option 2:** specify the same options in `config/config.js`
 - If you want to use environment variables but want to give them different names for some reason, change the names in the config/config.js file, accordingly.
+- Start the server with `node app.js`.
 
 ## Authentication System ##
 
