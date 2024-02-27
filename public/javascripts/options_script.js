@@ -31,7 +31,9 @@ function SubmitMode(){
 };
 
 function RemoveMode(select_div){
-  $.get("options/remove_run_mode?name="+$("#"+select_div).val(), function(data){
+  let mode = $("#"+select_div).val()
+  $.get("options/remove_run_mode?name="+mode, function(data){
+
     if (typeof data.res != 'undefined')
       alert(data.res);
     else

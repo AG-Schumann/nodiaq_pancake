@@ -32,7 +32,6 @@ function PostServerData(){
     ['active', 'softstop'].forEach((att) => {
       var checked = $(`#${att}`).is(":checked").toString();
       if (checked != current_doc[att]) {
-        console.log(att);
         new_doc[att] = checked;
       }
     });
