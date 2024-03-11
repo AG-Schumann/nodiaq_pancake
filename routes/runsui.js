@@ -59,6 +59,7 @@ router.post('/addtag', common.ensureAuthenticated, function(req, res){
     return res.json({err: "Please hard-reload your page (shift-f5 or equivalent)"});
   if (tag[0] === '_') // underscore tags are protected
     return res.sendStatus(403);
+
   var user = req.user.username;
   if (typeof user == 'undefined' || user == 'not set') {
     return res.json({err: "Invalid user credentials"});

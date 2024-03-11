@@ -44,7 +44,7 @@ var getTags = function(cell) {
   var tags = cell.getValue();
   if(typeof(tags) != "undefined"){
     ret = tags.reduce((tot, tag) => {
-      var divclass = "badge-" + (tag["name"][0] === "_" ? "primary" : "secondary");
+      var divclass = "bg-" + (tag["name"][0] === "_" ? "primary" : "secondary");
       var html = `<div class='inline-block mx-1'><span class='badge ${divclass}' style='cursor:pointer' onclick='SearchTag("${tag.name}")'>${tag.name}</span></div>`;
       return tot + html;
     }, "");
@@ -72,7 +72,7 @@ function InitializeRunsTable() {
   table = new Tabulator('#runs_table', {
     height: '100%',
     layout: "fitColumns",
-    frozenRows: 1,
+    //frozenRows: 1,
     pagination: "local",
     paginationSize: 24,
     columns: [
@@ -82,8 +82,8 @@ function InitializeRunsTable() {
       {title: 'User', field: 'user'},
       {title: 'Start (UTC)', field: 'start', width: 210, resizable: false},
       {title: 'Length', field: "end", formatter: getRunLength, width: 85, resizable: false, headerSort:false},
-      {title: 'Tags', formatter: getTags, headerSort:false},
-      {title: 'Newest Comment', formatter: getNewestComment, headerSort:false}
+      {title: 'Tags', field: "tags", formatter: getTags, headerSort:false},
+      {title: 'Newest Comment', field: "comments", formatter: getNewestComment, headerSort:false}
     ]
   });
   table.setSort([
@@ -94,37 +94,6 @@ function InitializeRunsTable() {
   });
   $('#datepicker_to').change(function () {
     UpdateRunsTable();
-  });
-  $('#add_tag_detail_button').click(function () {
-    var tag = $("#newtag").val();
-    if (typeof tag === "undefined" || tag == null || tag == '') {
-      alert('Please specify a tag');
-    } else if (tag.includes(' ')) {
-      alert('Tags cannot include spaces');
-    } else {
-      if (tag === 'flash') document.getElementById("flash_whoa").play();
-      var run = ($("#detail_Number").html());
-      var mode = ($("#detail_Mode").html());
-      if (typeof run !== "undefined" && typeof mode !== "undefined") {
-        $.ajax({
-          type: "POST",
-          url: "runsui/addtag",
-          data: {"version": SCRIPT_VERSION, "runid": run, "mode": mode, "tag": tag, "user": "web user"},
-          success: (data) => {
-            if (typeof data.err != 'undefined') alert(data.err);
-            UpdateRunsTable();
-            $("#newtag").val("");
-            ShowDetail(run, mode);
-            table.ajax.reload();
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            alert("Error, status = " + textStatus + ", " +
-                "error thrown: " + errorThrown
-            );
-          }
-        });
-      }
-    }
   });
   $('#add_comment_detail_button').click(function () {
     var comment = $("#newcomment").val();
@@ -154,6 +123,47 @@ function InitializeRunsTable() {
       }
     }
   });
+}
+
+function AddTag() {
+  var tag = $("#newtag").val();
+  if (!tag || tag.trim() === '') {
+    alert('Please specify a tag');
+  } else if (tag.includes(' ')) {
+    alert('Tags cannot include spaces');
+  } else {
+    $.getJSON(`runsui/get_runs_table?conditions={"tags.name":"${tag}"}`, (doc) => {
+      if (doc.length === 0) {
+        if (!confirm(`This tag hasn't been used before. Are you sure you want to proceed?`)) {
+          return;
+        }
+      }
+      if (tag === 'flash') document.getElementById("flash_whoa").play();
+      var run = ($("#detail_Number").html());
+      var mode = ($("#detail_Mode").html());
+      if (run && mode) {
+        {
+          $.ajax({
+            type: "POST",
+            url: "runsui/addtag",
+            data: {"version": SCRIPT_VERSION, "runid": run, "mode": mode, "tag": tag, "user": "web user"},
+            success: (data) => {
+              if (typeof data.err != 'undefined') alert(data.err);
+              UpdateRunsTable();
+              $("#newtag").val("");
+              ShowDetail(run, mode);
+              table.ajax.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              alert("Error, status = " + textStatus + ", " +
+                  "error thrown: " + errorThrown
+              );
+            }
+          });
+        }
+      }
+    });
+  }
 }
 
 function UpdateRunsTable() {

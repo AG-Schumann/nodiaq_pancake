@@ -35,15 +35,15 @@ block content
           div.modal-body
             ul.nav.nav-tabs#runTab(role="tablist")
               li.nav-item
-                a.nav-link.active#run_overview_tab(href="#tab_overview" data-toggle="tab" aria-controle="overview" aria-selected="true" role="tab") Detail
+                a.nav-link.active#run_overview_tab(href="#tab_overview" data-bs-toggle="tab" aria-controle="overview" aria-selected="true" role="tab") Detail
               li.nav-item
-                a.nav-link#run_tags_tab(data-toggle="tab" href="#tab_tags" role="tab" aria-controls="tag" aria-selected="false") Tags
+                a.nav-link#run_tags_tab(data-bs-toggle="tab" href="#tab_tags" role="tab" aria-controls="tag" aria-selected="false") Tags
               li.nav-item
-                a.nav-link#run_comments_tab(data-toggle="tab" href="#tab_comments" role="tab" aria-controls="comment" aria-selected="false") Comments
+                a.nav-link#run_comments_tab(data-bs-toggle="tab" href="#tab_comments" role="tab" aria-controls="comment" aria-selected="false") Comments
               li.nav-item
-                a.nav-link#run_locations_tab(data-toggle="tab" href="#tab_locations" role="tab" aria-controls="locations" aria-selected="false") Locations
+                a.nav-link#run_locations_tab(data-bs-toggle="tab" href="#tab_locations" role="tab" aria-controls="locations" aria-selected="false") Locations
               li.nav-item
-                a.nav-link#run_json_tab(data-toggle="tab" href="#tab_json" role="tab" aria-controls="json" aria-selected="false") JSON
+                a.nav-link#run_json_tab(data-bs-toggle="tab" href="#tab_json" role="tab" aria-controls="json" aria-selected="false") JSON
             div.tab-content#modalTabContent
               div.tab-pane.fade.show.active#tab_overview(role="tabpanel" aria-labelledby="overview-tab") 
                 div.row(style="padding-top:10px")
@@ -69,7 +69,7 @@ block content
                   label(for="newtag") Add tag: &nbsp;
                   input#newtag(type="text")
                   span &nbsp;
-                  button.btn.btn-default#add_tag_detail_button Add Tag
+                  button.btn.btn-default(onclick="AddTag()")#add_tag_detail_button Add Tag
                   br
                 div.form-group.row(style="min-width:500px;padding-left:15px;")
                   strong Suggested tags:
