@@ -27,7 +27,7 @@ function GetControlDoc(collection) {
   return Promise.all(p).then(values => {
     var latest = values[0].time;
     var user = values[0].user;
-    let ret = {};
+    let ret = {detector: 'tpc'}; // needed because of reasons
     values.forEach(doc => {
       ret[doc.field] = doc.field == 'stop_after' ? parseInt(doc.value) : doc.value;
       if (doc.time > latest) {
@@ -66,7 +66,7 @@ router.post('/set_control_docs', common.ensureAuthenticated, function(req, res){
         continue;
       if (typeof newdoc[key] != 'undefined' && newdoc[key] != olddoc[key]){
         collection.insert({field: key, value: key == 'stop_after' ? parseInt(newdoc[key]) : newdoc[key],
-          user: req.user.username, time: new Date(),});
+          user: req.user.username, time: new Date(), key: `tpc.${key}`});
       }
     }
   })

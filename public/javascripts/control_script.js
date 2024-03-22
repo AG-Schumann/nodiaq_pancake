@@ -8,7 +8,7 @@ function PopulateOptionsLists(callback){
       return;
     }
     data.forEach(doc => {
-      $("#mode_select").append(`<option value='${doc['name']}'><strong>${doc['name']}:</strong> ${doc['description']}</option>`);
+      $("#mode").append(`<option value='${doc['name']}'><strong>${doc['name']}:</strong> ${doc['description']}</option>`);
     });
     callback();
   });
@@ -17,7 +17,7 @@ function PopulateOptionsLists(callback){
 function PullServerData(){
   $.getJSON("control/get_control_doc", function(doc){
     ["stop_after", "comment"].forEach( (att) => $(`#${att}`).val(doc[att]));
-    $(`#mode_select`).filter(function() {return this.value===doc.mode;}).prop('selected', true);
+    $(`#mode`).filter(function() {return this.value===doc.mode;}).prop('selected', true);
     $(`#user`).val(doc.user);
     ['active', 'softstop'].forEach(att => $(`#${att}`).bootstrapToggle(doc[att] == 'true' ? 'on' : 'off'));
     document.page_ready = true;
