@@ -48,8 +48,6 @@ router.get("/get_control_doc", common.ensureAuthenticated, function(req, res){
 });
 
 router.post('/set_control_docs', common.ensureAuthenticated, function(req, res){
-  // TODO: Rewrite this for one detector
-  console.log('set_control_docs');
   var collection = req.db.get("detector_control");
   var data = req.body.data;
   if (typeof data.version == 'undefined' || data.version != SCRIPT_VERSION)
@@ -69,6 +67,7 @@ router.post('/set_control_docs', common.ensureAuthenticated, function(req, res){
           user: req.user.username, time: new Date(), key: `tpc.${key}`});
       }
     }
+    return res.status(200).json({});
   })
     .catch(err => {
       console.log(err.message);

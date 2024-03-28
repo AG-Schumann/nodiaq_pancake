@@ -40,7 +40,6 @@ function PostServerData(){
       if (val != current_doc[att])
         new_doc[att] = val;
     });
-    console.log(new_doc);
     if (Object.keys(new_doc).length == 0)
         return;
       post['doc'] = new_doc;
@@ -51,10 +50,10 @@ function PostServerData(){
         success: (data) => {
           if (typeof data.err != 'undefined')
             alert(data.err);
-          location.reload();
+	  location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          alert("Error, status = " + textStatus + ", " + "error thrown: " + errorThrown);
+	  alert("Error, status = " + textStatus + ", " + "error thrown: " + errorThrown);
         }
       });
   });
