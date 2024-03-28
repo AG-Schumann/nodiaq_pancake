@@ -33,7 +33,7 @@ router.get('/get_runs_table', common.ensureAuthenticated, function getData (req,
     //only max
     conditions['start'] = {"$lt": new Date(req.query['date_max'])};
   }
-  req.runs_db.get('runs').find(conditions)
+  req.runs_coll.find(conditions)
       .then(docs => res.json(docs))
       .catch(err => {console.log(err.message); return res.json([]);});
 });
