@@ -213,7 +213,7 @@ function ShowDetail(run, mode){
       var row = `<tr><td>${tag.name}</td>`;
       row += `<td>${tag.user}</td>`;
       row += `<td>${tag.date.substring(0, 16).replace('T', ' ')}</td>`;
-      row += `<td><button onclick='RemoveTag("${data.run_id}", "${data.mode}", "${tag.user}", "${tag.name}")' class='btn btn-warning'>Remove tag</button></td></tr>`;
+      row += `<td><button onclick='RemoveTag("${data.number}", "${data.mode}", "${tag.user}", "${tag.name}")' class='btn btn-warning'>Remove tag</button></td></tr>`;
       return total + row;
     }, ""));
 
