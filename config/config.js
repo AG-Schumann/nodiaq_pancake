@@ -10,6 +10,7 @@ config.port = process.env.NODIAQ_PORT;
 // Connection to MongoDB
 config.mongo_uri = process.env.NODIAQ_MONGO_URI
 config.daq_db = process.env.NODIAQ_DAQ_DB
+config.runs_db = process.env.NODIAQ_RUNS_DB
 
 // GitHub Auth
 // If you want to restrict people from changing stuff through the website, set use_authentication=true.
