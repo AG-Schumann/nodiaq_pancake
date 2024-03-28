@@ -201,7 +201,7 @@ function ShowDetail(run, mode){
   // people decided that it's a good idea to reuse run_ids. So we select via run_id AND mode and hope that's at least unique.
   $.getJSON(`runsui/get_run_doc?run=${run}&mode=${mode}`, function(data){
     // Set base data
-    $("#detail_Number").html(data['run_id']);
+    $("#detail_Number").html(data['number']);
     $("#detail_Start").html(moment(data['start']).utc().format('YYYY-MM-DD HH:mm'));
     $("#detail_End").html(data.end == null ? "Not set" : moment(data['end']).utc().format('YYYY-MM-DD HH:mm'));
     $("#detail_User").html(data['user']);
