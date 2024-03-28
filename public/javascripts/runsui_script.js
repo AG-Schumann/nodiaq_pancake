@@ -21,7 +21,7 @@ function VerifyMongoQuery() {
 
 var detailButton = function(cell) {
   let data = cell.getRow().getData();
-  return `<button style='padding:3px 5px;background-color:#ef476f;color:#eee' class='btn btn-default btn-sm' onclick='ShowDetail(${data.run_id}, "${data.mode}")'>show</button>`;
+  return `<button style='padding:3px 5px;background-color:#ef476f;color:#eee' class='btn btn-default btn-sm' onclick='ShowDetail(${data.number}, "${data.mode}")'>show</button>`;
 };
 
 var getRunLength = function(cell) {
