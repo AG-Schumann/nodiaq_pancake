@@ -77,7 +77,7 @@ function InitializeRunsTable() {
     paginationSize: 24,
     columns: [
       {title: 'Detail', formatter: detailButton, width: 80, resizable: false, headerSort:false},
-      {title: 'Run ID', field: 'run_id', width:100},
+      {title: 'Run ID', field: 'number', width:100},
       {title: 'Mode', field: 'mode'},
       {title: 'User', field: 'user'},
       {title: 'Start (UTC)', field: 'start', width: 210, resizable: false},

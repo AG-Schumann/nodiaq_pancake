@@ -52,7 +52,7 @@ router.get('/get_run_doc', common.ensureAuthenticated, function(req, res){
 });
 
 router.post('/addtag', common.ensureAuthenticated, function(req, res){
-  var run = req.body.runid;
+  var run = req.body.number;
   var mode = req.body.mode;
   var tag = req.body.tag;
   if (typeof req.body.version == 'undefined' || req.body.version != SCRIPT_VERSION)
