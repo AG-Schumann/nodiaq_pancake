@@ -12,7 +12,7 @@ router.get('/', common.ensureAuthenticated, function(req, res) {
 
 router.get('/modes', common.ensureAuthenticated, function(req, res){
   var collection = req.db.get("options");
-  collection.find({}, {fields: "name description -_id"})
+  collection.find({detector: {$ne: 'include'}}, {fields: "name description -_id"})
       .then((docs) => res.json(docs))
       .catch((err) => {
         console.log(err.message);

@@ -17,7 +17,7 @@ function PopulateOptionsLists(callback){
 function PullServerData(){
   $.getJSON("control/get_control_doc", function(doc){
     ["stop_after", "comment"].forEach( (att) => $(`#${att}`).val(doc[att]));
-    $(`#mode`).filter(function() {return this.value===doc.mode;}).prop('selected', true);
+    $(`#mode option`).filter(function() {return this.value===doc.mode;}).prop('selected', true);
     $(`#user`).val(doc.user);
     ['active', 'softstop'].forEach(att => $(`#${att}`).bootstrapToggle(doc[att] == 'true' ? 'on' : 'off'));
     document.page_ready = true;

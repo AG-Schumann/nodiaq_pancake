@@ -66,8 +66,7 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // Make our db accessible to our router
 app.use(function(req,res,next){
     req.db = db;
-    req.runs_db = runs_db;
-    req.runs_coll = db.get('runs');
+    req.runs_coll = runs_db.get('runs');
     next();
 });
 
