@@ -112,7 +112,7 @@ only screen and (min-width: 1081px)
 
 
 .desktop_title{
-   background-color: #0c1178;
+   background-color: #D6063C;
 }
 .desktop_title div h4{
    color: #ccc;
@@ -242,7 +242,7 @@ ul.CTAs li a {
 	min-width: 50px;
 	max-width: 50px;
 	text-align: center;
-	background: #0c1178;
+	background: #D6063C;
 	color: #fff;
 	margin-left: 0 !important;
 	height: 100vh !important;

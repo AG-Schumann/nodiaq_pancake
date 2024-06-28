@@ -10,7 +10,7 @@ const port = parseInt(config.port);
 
 var monk = require('monk');
 var db = monk(`${config.mongo_uri}/${config.daq_db}`, {authSource: 'admin'});
-var runs_db = monk(`${config.mongo_uri}/${config.runs_db}`, {authSource: 'admin'});
+//var runs_db = monk(`${config.mongo_uri}/${config.runs_db}`, {authSource: 'admin'});
 
 // Routers for all the sub-sites
 var indexRouter = require('./routes/index');
@@ -66,7 +66,7 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // Make our db accessible to our router
 app.use(function(req,res,next){
     req.db = db;
-    req.runs_coll = runs_db.get('runs');
+    req.runs_coll = db.get('runs');
     next();
 });
 
