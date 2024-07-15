@@ -74,7 +74,7 @@ app.use(function(req,res,next){
 app.use(function(req, res, next) {
     res.locals.user = req.user;
     req.template_info_base = {
-      pagetitle: 'Pancake DAQ',
+      pagetitle: 'XeBRA DAQ',
       detectors: [['tpc', 'PMT array']],
   }
   next();

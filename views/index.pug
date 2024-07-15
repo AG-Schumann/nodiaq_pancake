@@ -10,8 +10,40 @@ block content
       div.col-md-6.col-xs-12
         div.row
           div.col-12
-            div.det_card
+            div.det_card(style='width: 100%; height: 100%;')
               span.fontscale Welcome #{display_name} to the XeBRA control interface.
+        br
+        div.row
+          div.col-12
+            div.det_card(style='width: 100%; height: auto;')
+              table.table-bordered
+                thead
+                  tr
+                    th  
+                    th Status
+                    th Work list
+                    th Message
+                tbody
+                  tr
+                    th DAQ
+                    td#daqstatus
+                    td#daqworklist
+                    td#daqmsg
+                  tr
+                    th Dispatcher
+                    td#spatchstatus
+                    td 
+                    td#spatchmsg
+                  tr
+                    th Straxinator
+                    td#straxstatus
+                    td 
+                    td#straxmsg
+                  tr
+                    th Pulser
+                    td#ledstatus
+                    td 
+                    td 
         br
         div.row
           div.col-12

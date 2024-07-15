@@ -40,3 +40,19 @@
     color: white;
 }
 
+
+.table-bordered {
+  width: auto;
+  border-collapse: collapse;
+}
+
+
+.table-bordered th, .table-bordered td {
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
+.table-bordered th {
+  background-color: #f2f2f2;
+  text-align: left;
+}

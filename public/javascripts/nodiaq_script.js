@@ -11,6 +11,26 @@ function FillDetectorInfo(){
     });
 }
 
+function FillStatusInfo() {
+  $.getJSON("/get_status", function(data) {
+    if ($("#status").length) {
+      $("#daqstatus").html(data['daqstatus']);
+      $("#daqmsg").html(data['daqmsg']);
+      $("#spatchstatus").html(data['spatchstatus']);
+      $("#daqworklist").html(data['daqworklist']);
+      $("#spatchmsg").html(data['spatchmsg']);
+      $("#runprogress").html(data['runprogress']);
+      $("#run_duration").html(data['run_duration']);
+      $("#straxstatus").html(data['straxstatus']);
+      $("#straxmsg").html(data['straxmsg']);
+      $("#ledstatus").html(data['ledstatus']);
+      // Add any other fields as necessary
+    }
+  }).fail(function(jqXHR, textStatus, errorThrown) {
+    console.log("Error fetching status: " + textStatus);
+  });
+}
+
 function CheckForErrors(){
   $.getJSON("logui/areThereErrors", function(data){
     if(data['error_docs']>0){

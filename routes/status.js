@@ -12,6 +12,84 @@ router.get('/', common.ensureAuthenticated, function(req, res) {
 });
 
 
+async function getStatus(req) {
+  const db = req.db;
+  const ret = {
+    daqstatus: await base.currentStatus(),
+    daqmsg: '',
+    spatchstatus: '',
+    daqworklist: '',
+    spatchmsg: '',
+    runprogress: '0',
+    run_duration: '1',
+    straxstatus: '',
+    straxmsg: '',
+    ledstatus: ''
+  };
+
+  try {
+    // Get the latest log message
+    const latestLog = await db.collection('log').find({}).sort({_id: -1}).limit(1).toArray();
+    if (latestLog.length > 0) {
+      ret.daqmsg = latestLog[0].message;
+    }
+
+    // Get DAQ Dispatcher status
+    let statusDoc = await db.collection('system_control').findOne({subsystem: 'daqspatcher'});
+    if (statusDoc) {
+      ret.spatchstatus = statusDoc.status;
+      ret.daqworklist = statusDoc.worklist;
+      ret.spatchmsg = statusDoc.msg || '';
+    }
+
+    if (ret.daqstatus === 'running') {
+      const runStart = await db.collection('runs').aggregate([
+        {$match: {start: {$exists: true}}},
+        {$sort: {_id: -1}},
+        {$limit: 1}
+      ]).toArray();
+
+      if (runStart.length > 0) {
+        const run_start = runStart[0].start;
+        const run_duration = statusDoc.duration;
+        const runtime = (new Date() - new Date(run_start)) / 1000;
+        ret.runprogress = runtime;
+        ret.run_duration = run_duration;
+      }
+    }
+
+    // Get Straxinator status
+    statusDoc = await db.collection('system_control').findOne({subsystem: 'straxinator'});
+    if (statusDoc) {
+      ret.straxstatus = statusDoc.status;
+      ret.straxmsg = statusDoc.msg || '';
+    }
+
+    // Get Pulser status
+    statusDoc = await db.collection('system_control').findOne({subsystem: 'pulser'});
+    if (statusDoc) {
+      ret.ledstatus = statusDoc.status;
+      // ret.ledmsg = statusDoc.msg || '';
+    }
+
+    return ret;
+  } catch (err) {
+    console.error(err);
+    throw new Error('Failed to get status');
+  }
+}
+
+router.get('/get_status', common.ensureAuthenticated, async function(req, res) {
+  try {
+    const status = await getStatus(req);
+    res.json(status);
+  } catch (err) {
+    console.log(err.message);
+    res.json({});
+  }
+});
+
+
 router.get('/get_detector_status', common.ensureAuthenticated, function(req, res){
   req.db.get('aggregate_status').find({}, {"sort": {"_id": -1}, "limit": 1})
   .then( docs => {
