@@ -21,7 +21,7 @@ function VerifyMongoQuery() {
 
 var detailButton = function(cell) {
   let data = cell.getRow().getData();
-  return `<button style='padding:3px 5px;background-color:#ef476f;color:#eee' class='btn btn-default btn-sm' onclick='ShowDetail(${data.number}, "${data.mode}")'>show</button>`;
+  return `<button style='padding:3px 5px;background-color:#ef476f;color:#eee' class='btn btn-default btn-sm' onclick='ShowDetail(${data.run_id}, "${data.mode}")'>show</button>`;
 };
 
 var getRunLength = function(cell) {
@@ -77,13 +77,14 @@ function InitializeRunsTable() {
     paginationSize: 24,
     columns: [
       {title: 'Detail', formatter: detailButton, width: 80, resizable: false, headerSort:false},
-      {title: 'Run ID', field: 'number', width:100},
+      {title: 'Run ID', field: 'run_id', width:100},
       {title: 'Mode', field: 'mode'},
       {title: 'User', field: 'user'},
       {title: 'Start (UTC)', field: 'start', width: 210, resizable: false},
       {title: 'Length', field: "end", formatter: getRunLength, width: 85, resizable: false, headerSort:false},
       {title: 'Tags', field: "tags", formatter: getTags, headerSort:false},
-      {title: 'Newest Comment', field: "comments", formatter: getNewestComment, headerSort:false}
+      //{title: 'Newest Comment', field: "comments", formatter: getNewestComment, headerSort:false}
+      {title: 'Newest Comment', field: "comment", headerSort:false}
     ]
   });
   table.setSort([
@@ -201,7 +202,7 @@ function ShowDetail(run, mode){
   // people decided that it's a good idea to reuse run_ids. So we select via run_id AND mode and hope that's at least unique.
   $.getJSON(`runsui/get_run_doc?run=${run}&mode=${mode}`, function(data){
     // Set base data
-    $("#detail_Number").html(data['number']);
+    $("#detail_Number").html(data['run_id']);
     $("#detail_Start").html(moment(data['start']).utc().format('YYYY-MM-DD HH:mm'));
     $("#detail_End").html(data.end == null ? "Not set" : moment(data['end']).utc().format('YYYY-MM-DD HH:mm'));
     $("#detail_User").html(data['user']);
@@ -213,7 +214,7 @@ function ShowDetail(run, mode){
       var row = `<tr><td>${tag.name}</td>`;
       row += `<td>${tag.user}</td>`;
       row += `<td>${tag.date.substring(0, 16).replace('T', ' ')}</td>`;
-      row += `<td><button onclick='RemoveTag("${data.number}", "${data.mode}", "${tag.user}", "${tag.name}")' class='btn btn-warning'>Remove tag</button></td></tr>`;
+      row += `<td><button onclick='RemoveTag("${data.run_id}", "${data.mode}", "${tag.user}", "${tag.name}")' class='btn btn-warning'>Remove tag</button></td></tr>`;
       return total + row;
     }, ""));
 

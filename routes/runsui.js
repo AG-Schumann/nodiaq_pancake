@@ -46,7 +46,7 @@ router.get('/get_run_doc', common.ensureAuthenticated, function(req, res){
     num = parseInt(num, 10);
   if(typeof num === "undefined")
     return res.json({});
-  req.runs_coll.findOne({"number": num, "mode": mode})
+  req.runs_coll.findOne({"run_id": num, "mode": mode})
   .then( doc => res.json(doc === null ? {} : doc))
   .catch(err => {console.log(err.message); return res.json({});});
 });
@@ -68,7 +68,7 @@ router.post('/addtag', common.ensureAuthenticated, function(req, res){
   // Convert runs to int
   var runsint = parseInt(run);
   // Update many
-  var query = {'number': runsint, 'mode': mode};
+  var query = {'run_id': runsint, 'mode': mode};
   var update = {$addToSet: {tags: {date: new Date(), user: user, name: tag}}};
   req.runs_coll.update(query, update)
   .then( () => res.status(200).json({}))
@@ -85,7 +85,7 @@ router.post('/removetag', common.ensureAuthenticated, function(req, res){
   if (tag[0] === '_') { // underscore tags are protected
     return res.sendStatus(403);
   }
-  var query = {'number': parseInt(run, 10), 'mode': mode};
+  var query = {'run_id': parseInt(run, 10), 'mode': mode};
   var update = {$pull: {tags: {name: tag, user: tag_user}},
     $push: {deleted_tags: {name: tag, user: tag_user, deleted_by: req.user.username, date: new Date()}}};
   req.runs_coll.update(query, update)
@@ -105,7 +105,7 @@ router.post('/addcomment', common.ensureAuthenticated, function(req, res){
   }
   // Convert runs to int
   var runsint = parseInt(run);
-  var query = {'number': runsint, 'mode': mode};
+  var query = {'run_id': runsint, 'mode': mode};
   var update = {$push: {'comments': {'date': new Date(), 'user': user, 'comment': comment}}};
   req.runs_coll.update(query, update)
       .then( () => res.status(200).json({}))
