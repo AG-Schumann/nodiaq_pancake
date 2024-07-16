@@ -15,14 +15,10 @@ router.get('/', common.ensureAuthenticated, function(req, res) {
 router.get('/get_daq_status', common.ensureAuthenticated, function(req, res) {
   req.db.get('system_control').findOne({ subsystem: 'daq' })
   .then(doc => {
-    if (!doc) {
-      return res.json({});}
-    console.log(doc);
+    if (!doc) {return res.json({});}
     return res.json(doc);
   })
-  .catch(err => {
-    console.log(err.message);
-    return res.json({});
+  .catch(err => {console.log(err.message); return res.json({});
   });
 });
 
