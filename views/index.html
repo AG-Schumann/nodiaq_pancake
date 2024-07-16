@@ -8,7 +8,7 @@
 });</script></div></div><script>$(document).ready(function(){
   setInterval(CheckForErrors, 5000);
   FillDetectorInfo();
-  FillStatusInfo();
-  setInterval(FillStatusInfo, 5000);
   setInterval(FillDetectorInfo, 5000);
+  FillDAQStatusInfo();
+  setInterval(FillDAQStatusInfo, 5000);
 });</script></body></html>
