@@ -3,8 +3,8 @@ var statii = ["IDLE", "ARMING", "ARMED", "RUNNING", "ERROR", "UNKNOWN"];
 function FillDetectorInfo(){
   $.getJSON("status/get_detector_status", function(data){
       if($("#status").length){
-        $("#mode").html(data['mode']);
-        $("#run_number").html(data['number']);
+        $("#mode").html(data['run_mode']);
+        $("#run_number").html(data['current_run_id']);
         $("#status").html(statii[data['status']]);
         $("#rate").html(data['rate'].toFixed(2));
       }
@@ -12,8 +12,8 @@ function FillDetectorInfo(){
 }
 
 function FillStatusInfo() {
-  $.getJSON("/get_status", function(data) {
-    if ($("#status").length) {
+  $.getJSON("status/get_status", function(data) {
+    if ($("#daqstatus").length) {
       $("#daqstatus").html(data['daqstatus']);
       $("#daqmsg").html(data['daqmsg']);
       $("#spatchstatus").html(data['spatchstatus']);

@@ -91,7 +91,7 @@ router.get('/get_status', common.ensureAuthenticated, async function(req, res) {
 
 
 router.get('/get_detector_status', common.ensureAuthenticated, function(req, res){
-  req.db.get('aggregate_status').find({}, {"sort": {"_id": -1}, "limit": 1})
+  req.db.get('status').find({}, {"sort": {"_id": -1}, "limit": 1})
   .then( docs => {
     if (docs.length == 0)
       return res.json({});
