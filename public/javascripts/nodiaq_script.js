@@ -23,6 +23,25 @@ function FillDAQStatusInfo(){
     });
 }
 
+function FillStatusInfo(){
+  var req1 = $.getJSON("status/get_daq_status");
+  var req2 = $.getJSON("status/get_dispatcher_status");
+  var req3 = $.getJSON("status/get_straxinator_status");
+  $.when(req1,req2,req3).done(function(res1,res2,res3) {
+    var data1 = res1[0];
+    var data2 = res2[0];
+    var data3 = res3[0];
+    $("#daqgoal").html(data1['goal']);
+    $("#daqmsg").html(data1['msg']);
+    $("#daqstatus").html(data1['status']);
+    $("#spatchgoal").html(data2['goal']);
+    $("#spatchmsg").html(data2['msg']);
+    $("#spatchstatus").html(data2['status']);
+    $("#straxgoal").html(data3['goal']);
+    $("#straxmsg").html(data3['msg']);
+    $("#straxstatus").html(data3['status']);
+  });
+}
 
 function CheckForErrors(){
   $.getJSON("logui/areThereErrors", function(data){

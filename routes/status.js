@@ -23,6 +23,28 @@ router.get('/get_daq_status', common.ensureAuthenticated, function(req, res) {
 });
 
 
+router.get('/get_dispatcher_status', common.ensureAuthenticated, function(req, res) {
+  req.db.get('system_control').findOne({ subsystem: 'daqspatcher' })
+  .then(doc => {
+    if (!doc) {return res.json({});}
+    return res.json(doc);
+  })
+  .catch(err => {console.log(err.message); return res.json({});
+  });
+});
+
+
+router.get('/get_straxinator_status', common.ensureAuthenticated, function(req, res) {
+  req.db.get('system_control').findOne({ subsystem: 'straxinator' })
+  .then(doc => {
+    if (!doc) {return res.json({});}
+    return res.json(doc);
+  })
+  .catch(err => {console.log(err.message); return res.json({});
+  });
+});
+
+
 router.get('/get_detector_status', common.ensureAuthenticated, function(req, res){
   req.db.get('status').find({}, {"sort": {"_id": -1}, "limit": 1})
   .then( docs => {
