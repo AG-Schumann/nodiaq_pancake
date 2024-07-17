@@ -7,11 +7,11 @@
     height:100vh;
 }
 .btn.btn-default{
-	background-color: #0c1178;
+	background-color: hsl(164, 100%, 25%);
 	color: #ddd;
 }
 .btn.btn-default:hover{
-    background-color: rgba(12, 17, 120, 0.65);
+    background-color: hsl(164, 100%, 35%);
     color: #ddd;
 }
 
@@ -72,7 +72,7 @@
 }
 
 #sidebar ul li a {
-	color: #fff;
+	color: #000000;
     padding: 10px;
     font-size: 3.1em;
     display: block;
@@ -82,7 +82,7 @@
 	}
 
 #sidebar ul li a:hover {
-    color: #7386D5;
+    color: hsl(164, 70%, 35%);
     background: #eee;
 }
 
@@ -112,7 +112,7 @@ only screen and (min-width: 1081px)
 
 
 .desktop_title{
-   background-color: #D6063C;
+   background-color: #06d6a0;
 }
 .desktop_title div h4{
    color: #ccc;
@@ -147,7 +147,7 @@ only screen and (min-width: 1081px)
 }
 
  #sidebar ul li.active>a, a[aria-expanded="true"] {
-     color: #0e0e75;
+     color: #006349;
      background: #eee;
  /*color: #eee;
    background: #0c1178;*/
@@ -242,7 +242,7 @@ ul.CTAs li a {
 	min-width: 50px;
 	max-width: 50px;
 	text-align: center;
-	background: #D6063C;
+	background: #06d6a0;
 	color: #fff;
 	margin-left: 0 !important;
 	height: 100vh !important;
