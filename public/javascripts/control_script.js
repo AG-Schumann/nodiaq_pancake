@@ -16,10 +16,10 @@ function PopulateOptionsLists(callback){
 
 function PullServerData(){
   $.getJSON("control/get_control_doc", function(doc){
-    ["stop_after", "comment"].forEach( (att) => $(`#${att}`).val(doc[att]));
+    ["duration", "comment"].forEach( (att) => $(`#${att}`).val(doc[att]));
     $(`#mode option`).filter(function() {return this.value===doc.mode;}).prop('selected', true);
     $(`#user`).val(doc.user);
-    ['active', 'softstop'].forEach(att => $(`#${att}`).bootstrapToggle(doc[att] == 'true' ? 'on' : 'off'));
+    ['active', 'softstop'].forEach(att => $(`#${att}`).bootstrapToggle(doc[att] ? 'on' : 'off'));
     document.page_ready = true;
   }); // getJSON
 }
@@ -30,12 +30,12 @@ function PostServerData(){
   var new_doc = {};
   $.getJSON("control/get_control_doc", function(current_doc) {
     ['active', 'softstop'].forEach((att) => {
-      var checked = $(`#${att}`).is(":checked").toString();
+      var checked = $(`#${att}`).is(":checked");
       if (checked != current_doc[att]) {
         new_doc[att] = checked;
       }
     });
-    ["stop_after", "mode", "comment"].forEach((att) => {
+    ["duration", "mode", "comment"].forEach((att) => {
       var val = $(`#${att}`).val();
       if (val != current_doc[att])
         new_doc[att] = val;

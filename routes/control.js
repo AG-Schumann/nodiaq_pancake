@@ -20,35 +20,32 @@ router.get('/modes', common.ensureAuthenticated, function(req, res){
       });
 });
 
+
 function GetControlDoc(collection) {
-  //get the latest entry for each key
-  var keys = ['active', 'comment', 'mode', 'softstop', 'stop_after'];
-  var p = keys.map(k => collection.findOne({field: `${k}`}, {sort: {_id: -1}}));
-  return Promise.all(p).then(values => {
-    var latest = values[0].time;
-    var user = values[0].user;
-    let ret = {detector: 'tpc'}; // needed because of reasons
-    values.forEach(doc => {
-      ret[doc.field] = doc.field == 'stop_after' ? parseInt(doc.value) : doc.value;
-      if (doc.time > latest) {
-        user = doc.user;
-        latest = doc.time;
+  const projection = { active: 1, mode: 1, user: 1, duration: 1, comment: 1, softstop: 1, _id: 0 };
+  return collection.findOne({ subsystem: 'daqspatcher' }, { projection })
+    .then(doc => {
+      if (!doc) {
+        console.log('Document not found');
+        return {};
       }
+      return doc;
+    })
+    .catch(err => {
+      console.log('Error fetching document:', err.message);
+      return {};
     });
-    ret['user'] = user;
-    return ret;
-  }).catch(err => {console.log(err.message); return {};});
 }
 
 router.get("/get_control_doc", common.ensureAuthenticated, function(req, res){
-  var collection = req.db.get("detector_control");
+  var collection = req.db.get("system_control");
   GetControlDoc(collection)
     .then(doc => res.json(doc))
     .catch(err => {console.log(err.message); return res.json({});});
 });
 
 router.post('/set_control_docs', common.ensureAuthenticated, function(req, res){
-  var collection = req.db.get("detector_control");
+  var collection = req.db.get("system_control");
   var data = req.body.data;
   if (typeof data.version == 'undefined' || data.version != SCRIPT_VERSION)
     return res.json({'err': 'Please hard-reload your page (shift-f5 or equivalent)'});
@@ -60,13 +57,11 @@ router.post('/set_control_docs', common.ensureAuthenticated, function(req, res){
       return;
     }
     for (var key in olddoc) {
-      if (key == 'user')
-        continue;
       if (typeof newdoc[key] != 'undefined' && newdoc[key] != olddoc[key]){
-        collection.insert({field: key, value: key == 'stop_after' ? parseInt(newdoc[key]) : newdoc[key],
-          user: req.user.username, time: new Date(), key: `tpc.${key}`});
+        collection.update({subsystem:'daqspatcher'}, {$set:{[key]: key == 'duration' ? parseInt(newdoc[key]) : (key == 'active' || key == 'softstop') ? newdoc[key] == 'true' : newdoc[key]}});
       }
     }
+
     return res.status(200).json({});
   })
     .catch(err => {

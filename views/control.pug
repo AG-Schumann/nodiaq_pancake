@@ -35,8 +35,8 @@ block content
           label.form-label(for='user') Controller
           input.form-control.my_name_is.fontscale(id='user' type="text" value=`${username}` name="user" readonly required)
         div.col-xs-12.col-sm-6.col-md-4.col-xl-2.form-group
-          label.form-label(for='stop_after') Length (minutes)
-          input.form-control.det_control#stop_after(type="number" min=1 max=1440 value=60)
+          label.form-label(for='duration') Length (minutes)
+          input.form-control.det_control#duration(type="number" min=1 max=1440 value=60)
         div.col-xs-12.col-sm-6.col-md-4.col-xl-4.form-group.fontscale
           label.form-label(for='mode') Run Mode
           select.form-control.det_control.det_mode#mode(name="run_mode" required)
