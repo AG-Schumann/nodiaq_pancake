@@ -25,11 +25,6 @@ block content
                     th Message
                 tbody
                   tr
-                    th DAQ
-                    td#daqstatus
-                    td#daqgoal
-                    td#daqmsg
-                  tr
                     th Dispatcher
                     td#spatchstatus
                     td#spatchgoal
@@ -69,12 +64,12 @@ block content
           div#pie_box
     br
     div.row
-      div.col-12
+      div.col-md-6.col-xs-12
         div.fullsizechart.det_card_noheight
           div.chart_header(style='font-size:12px')
             strong(style='font-size:22px') Status History &nbsp;&nbsp;
             strong(style='font-size:12px') Time: &nbsp;
-            select#menu_history_s(style="width:100px")
+            select#menu_status_history_s(style="width:100px")
               option(value=172800) 48h
               option(value=129600) 36h
               option(value=86400 selected) 24h
@@ -82,7 +77,29 @@ block content
               option(value=21600) 6h
               option(value=3600) 1h
             strong(style='font-size:12px') &nbsp;&nbsp; Resolution: &nbsp;
-            select#menu_resolution_s(style="width:100px")
+            select#menu_status_resolution_s(style="width:100px")
+              option(value=10) 10s
+              option(value=30) 30s
+              option(value=60 selected) 1m
+              option(value=300) 5m
+              option(value=600) 10m
+            span &nbsp;&nbsp;
+            button.btn.btn-info#update_button(style="height:80%;padding-top:3px" onclick="DrawStatusPlot()") Update
+          div.chart_body#status_chart(style="height:300px")
+      div.col-md-6.col-xs-12
+        div.fullsizechart.det_card_noheight
+          div.chart_header(style='font-size:12px')
+            strong(style='font-size:22px') Rate History &nbsp;&nbsp;
+            strong(style='font-size:12px') Time: &nbsp;
+            select#menu_rate_history_s(style="width:100px")
+              option(value=172800) 48h
+              option(value=129600) 36h
+              option(value=86400 selected) 24h
+              option(value=43200) 12h
+              option(value=21600) 6h
+              option(value=3600) 1h
+            strong(style='font-size:12px') &nbsp;&nbsp; Resolution: &nbsp;
+            select#menu_rate_resolution_s(style="width:100px")
               option(value=10) 10s
               option(value=30) 30s
               option(value=60 selected) 1m
@@ -92,11 +109,13 @@ block content
             button.btn.btn-info#update_button(style="height:80%;padding-top:3px" onclick="DrawRatePlot()") Update
           div.chart_body#rate_chart(style="height:300px")
 
+
   script.
     $(document).ready(function(){
       DrawActiveLink("#lindex");
       DrawPie("pie_box", 30);
       DrawRatePlot();
+      DrawStatusPlot();
       $("#pie_button :input").change(function() {
          DrawPie("pie_box", $(this).val());
       });

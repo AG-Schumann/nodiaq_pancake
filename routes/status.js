@@ -96,10 +96,11 @@ router.get('/get_reader_history', common.ensureAuthenticated, function(req,res){
           ]
         }
       },
-      insertion_time: {$toDate: "$_id"}, _id: 1, rate: 1, buffer_length: 1, host: 1
+      insertion_time: {$toDate: "$_id"}, _id: 1, status: 1, rate: 1, buffer_length: 1, host: 1
     }},
     {$group: {
       _id: '$time_bin',
+      status: {$avg: '$status'},
       rate: {$avg: '$rate'},
       buff: {$avg: '$buffer_length'},
       host: {$first: '$host'}
@@ -109,6 +110,7 @@ router.get('/get_reader_history', common.ensureAuthenticated, function(req,res){
       time: {$convert: {input: {$add: [{$multiply: ['$_id', resolution, 1000]}, t]},
         'to': 'long'
       }},
+      status: 1,
       rate: 1,
       buff: 1,
       host: 1,
@@ -116,12 +118,14 @@ router.get('/get_reader_history', common.ensureAuthenticated, function(req,res){
     {$sort: {time: 1}},
     {$group: {
       _id: '$host',
+      statuses: {$push: '$status'},
       rates: {$push: '$rate'},
       buffs: {$push: '$buff'},
       times: {$push: '$time'},
     }},
     {$project: {
       host: '$_id',
+      status: {$zip: {inputs: ['$times', '$statuses']}},
       rate: {$zip: {inputs: ['$times', '$rates']}},
       buff: {$zip: {inputs: ['$times', '$buff']}},
     }},
@@ -133,5 +137,7 @@ router.get('/get_reader_history', common.ensureAuthenticated, function(req,res){
   })
   .catch(err => {console.log(err.message); return res.json({});});
 });
+
+
 
 module.exports = router;

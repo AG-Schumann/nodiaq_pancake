@@ -39,9 +39,63 @@ function DrawPie(pie_div, ndays){
   }); // getJSON
 }
 
+function DrawStatusPlot(){
+  var history = $("#menu_status_history_s").val();
+  var resolution = $("#menu_status_resolution_s").val();
+  var limit = parseInt(history);
+  $.getJSON("status/get_reader_history?limit="+limit+"&res="+resolution, function(data){
+    if (typeof data.err != 'undefined') {
+      console.log("Error: " + data.err);
+      return;
+    }
+    var series = [];
+    var yaxis_label = "State";
+    for (var key in data) {
+      var statuses = {
+        "type": "line",
+        "name": key+" status",
+        "data": data[key]['status']};
+      series.push(statuses);
+    }
+    var chart_opts2 = {
+      chart: {
+        zoomType: 'xy',
+        //            margin: [5, 5, 20, 80],
+      },
+      plotOptions: {
+        series: {
+          fillOpacity: 0.3,
+          lineWidth: 1
+        },
+      },
+      credits: {
+        enabled: false,
+      },
+      title: {
+        text: '',
+      },
+      xAxis: {
+        type: 'datetime',
+      },
+      yAxis: {
+        title: {
+          text: yaxis_label,
+        },
+        min: 0,
+      },
+      legend: {
+        enabled: true,
+      },
+      series: series,
+    };
+    document.StatusPlot = Highcharts.chart('status_chart', chart_opts2);
+  });
+}
+
+
 function DrawRatePlot(){
-  var history = $("#menu_history_s").val();
-  var resolution = $("#menu_resolution_s").val();
+  var history = $("#menu_rate_history_s").val();
+  var resolution = $("#menu_rate_resolution_s").val();
   var limit = parseInt(history);
   $.getJSON("status/get_reader_history?limit="+limit+"&res="+resolution, function(data){
     if (typeof data.err != 'undefined') {
@@ -91,5 +145,3 @@ function DrawRatePlot(){
     document.RatePlot = Highcharts.chart('rate_chart', chart_opts);
   });
 }
-
-
