@@ -26,9 +26,7 @@ block content
                     data-onstyle="success" data-offstyle="danger" data-on="on" data-off="off" data-size='small')
               div.form-check-inline
                 label.form-check-label
-                  span Soft stop &nbsp;
-                  input.det_control(id=`softstop` type="checkbox" data-toggle="toggle"
-                    data-onstyle="success" data-offstyle="danger" data-on="on" data-off="off" data-size='small')
+                  button.btn.btn-danger.btn-xl.m-2#stop_run(onclick="StopRun()") Stop
       hr(style='margin-top:3px')
       div.row(style="padding:5px")
         div.col-xs-12.col-sm-6.col-md-4.col-xl-2.form-group

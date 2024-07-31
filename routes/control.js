@@ -25,6 +25,7 @@ function GetControlDoc(collection) {
   const projection = { active: 1, mode: 1, user: 1, duration: 1, comment: 1, softstop: 1, _id: 0 };
   return collection.findOne({ subsystem: 'daqspatcher' }, { projection })
     .then(doc => {
+      doc['duration'] /= 60;
       if (!doc) {
         console.log('Document not found');
         return {};
@@ -51,6 +52,9 @@ router.post('/set_control_docs', common.ensureAuthenticated, function(req, res){
     return res.json({'err': 'Please hard-reload your page (shift-f5 or equivalent)'});
   GetControlDoc(collection).then(olddoc => {
     var newdoc = data['doc'];
+    newdoc['user'] = req.user.username;
+    if ('duration' in newdoc) {
+      newdoc['duration'] *= 60;}
     console.log(olddoc);
     console.log(newdoc);
     if (typeof newdoc == 'undefined') {
