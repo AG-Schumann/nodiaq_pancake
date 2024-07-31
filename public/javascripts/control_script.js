@@ -25,7 +25,6 @@ function PullServerData(){
 }
 
 function PostServerData(){
-
   post = {'version': SCRIPT_VERSION};
   var new_doc = {};
   $.getJSON("control/get_control_doc", function(current_doc) {
@@ -56,5 +55,24 @@ function PostServerData(){
 	  alert("Error, status = " + textStatus + ", " + "error thrown: " + errorThrown);
         }
       });
+  });
+}
+
+
+function StopRun(){
+  post = {'version': SCRIPT_VERSION};
+  post['doc'] = {'goal': 'stop'}
+  $.ajax({
+    type: "POST",
+    url: "control/set_control_docs",
+    data: {"data": post},
+    success: (data) => {
+      if (typeof data.err != 'undefined')
+        alert(data.err);
+      location.reload();
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      alert("Error, status = " + textStatus + ", " + "error thrown: " + errorThrown);
+    }
   });
 }

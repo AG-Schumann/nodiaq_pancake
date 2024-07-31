@@ -22,7 +22,7 @@ router.get('/modes', common.ensureAuthenticated, function(req, res){
 
 
 function GetControlDoc(collection) {
-  const projection = { active: 1, mode: 1, user: 1, duration: 1, comment: 1, softstop: 1, _id: 0 };
+  const projection = { active: 1, mode: 1, user: 1, duration: 1, comment: 1, goal: 1, _id: 0 };
   return collection.findOne({ subsystem: 'daqspatcher' }, { projection })
     .then(doc => {
       doc['duration'] /= 60;

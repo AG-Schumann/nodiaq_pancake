@@ -21,12 +21,12 @@ block content
           div.float-end(style='display:inline-block')
               div.form-check-inline
                 label.form-check-label
+                  button.btn.btn-warning.btn-xl.m-2#openstopModal(onclick="$('#stopModal').modal('show')") Stop run
+              div.form-check-inline
+                label.form-check-label
                   span Run &nbsp;
                   input.det_control(id="active" type="checkbox" checked data-toggle="toggle"
                     data-onstyle="success" data-offstyle="danger" data-on="on" data-off="off" data-size='small')
-              div.form-check-inline
-                label.form-check-label
-                  button.btn.btn-danger.btn-xl.m-2#stop_run(onclick="StopRun()") Stop
       hr(style='margin-top:3px')
       div.row(style="padding:5px")
         div.col-xs-12.col-sm-6.col-md-4.col-xl-2.form-group
@@ -41,6 +41,15 @@ block content
         div.col-xs-12.col-sm-6.col-md-12.col-xl-4.form-group
           label.form-label(for=`comment`) Comment
           textarea.form-control.det_control.det_comment(id=`comment` rows="2" name="comment" type='text')
+  div.modal.fade#stopModal(tabindex="-1" role="dialog")
+    div.modal-dialog(role="document")
+      div.modal-content
+        div.modal-body 
+          h5 Stop the current run?
+          p Make sure the run is set to "off" before.
+        div.modal-footer
+          button.btn.btn-warning(type='submit' onclick="StopRun()") Stop run
+          button.btn.btn-secondary(onclick="$('#stopModal').modal('hide')") Cancel
 
 
   script.
