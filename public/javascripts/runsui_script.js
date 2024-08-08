@@ -77,14 +77,14 @@ function InitializeRunsTable() {
     paginationSize: 24,
     columns: [
       {title: 'Detail', formatter: detailButton, width: 80, resizable: false, headerSort:false},
-      {title: 'Run ID', field: 'run_id', width:100},
-      {title: 'Mode', field: 'mode'},
-      {title: 'User', field: 'user'},
+      {title: 'Run ID', field: 'run_id', width:80},
+      {title: 'Mode', field: 'mode', width:120},
+      {title: 'User', field: 'user', width:100},
       {title: 'Start (UTC)', field: 'start', width: 210, resizable: false},
       {title: 'Length', field: "end", formatter: getRunLength, width: 85, resizable: false, headerSort:false},
-      {title: 'Tags', field: "tags", formatter: getTags, headerSort:false},
-      //{title: 'Newest Comment', field: "comments", formatter: getNewestComment, headerSort:false}
-      {title: 'Newest Comment', field: "comment", headerSort:false}
+      {title: 'Tags', field: "tags", formatter: getTags, headerSort:false, width:80},
+      {title: 'Newest Comments', field: "comments", formatter: getNewestComment, headerSort:false},
+      {title: 'Old Comments', field: "comment", headerSort:false, width:250}
     ]
   });
   table.setSort([
