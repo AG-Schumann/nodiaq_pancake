@@ -42,7 +42,7 @@
     min-height: 100vh;
     transition: all 0.3s;
     left: 50px;
-    position: absolute;
+/*    position: absolute;*/
     overflow-y: auto;
     /*background-color: #eee;*/
 }
@@ -119,11 +119,11 @@ only screen and (min-width: 1081px)
    color: #ccc;
 }
  #sidebar.active  .logo{
-     display: block;
+     /*display: block;*/
      -webkit-animation: fadeIn 1s;
      animation: fadeIn 1s;
-     width:50px;
-     height:50px;
+     width:60px;
+     height:60px;
      margin-left:0px !important;
  }
 #sidebar ul li{
@@ -156,7 +156,7 @@ only screen and (min-width: 1081px)
  #sidebar.active ul li a {
      padding: 10px 2px;
      text-align: center;
-     font-size: 0.65em;
+     font-size: 0.75em;
  }
 
  #sidebar ul li a {
@@ -241,7 +241,7 @@ ul.CTAs li a {
     	display: block;
 	width:100%;
 	min-width: 50px;
-	max-width: 50px;
+	max-width: 65px;
 	text-align: center;
 	background: #06d6a0;
 	color: #fff;
