@@ -123,6 +123,46 @@ function InitializeRunsTable() {
       }
     }
   });
+  $('#add_tag_detail_button').click(function () {
+    var tag = $("#newtag").val();
+    if (!tag || tag.trim() === '') {
+      alert('Please specify a tag');
+    } else if (tag.includes(' ')) {
+      alert('Tags cannot include spaces');
+    } else {
+      $.getJSON(`runsui/get_runs_table?conditions={"tags.name":"${tag}"}`, (doc) => {
+        if (doc.length === 0) {
+          if (!confirm(`This tag hasn't been used before. Are you sure you want to proceed?`)) {
+            return;
+          }
+        }
+        if (tag === 'flash') document.getElementById("flash_whoa").play();
+        var run = ($("#detail_Number").html());
+        var mode = ($("#detail_Mode").html());
+        if (run && mode) {
+          {
+            $.ajax({
+              type: "POST",
+              url: "runsui/addtag",
+              data: {"version": SCRIPT_VERSION, "runid": run, "mode": mode, "tag": tag, "user": "web user"},
+              success: (data) => {
+                if (typeof data.err != 'undefined') alert(data.err);
+                UpdateRunsTable();
+                $("#newtag").val("");
+                ShowDetail(run, mode);
+                table.ajax.reload();
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                alert("Error, status = " + textStatus + ", " +
+                    "error thrown: " + errorThrown
+                );
+              }
+            });
+          }
+        }
+      });
+    }
+  });
 }
 
 function AddTag() {
