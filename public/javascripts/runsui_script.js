@@ -78,7 +78,7 @@ function InitializeRunsTable() {
     columns: [
       {title: 'Detail', formatter: detailButton, width: 80, resizable: false, headerSort:false},
       {title: 'Run ID', field: 'run_id', width:80},
-      {title: 'Mode', field: 'mode', width:120},
+      {title: 'Mode', field: 'mode', width:190},
       {title: 'User', field: 'user', width:100},
       {title: 'Start (UTC)', field: 'start', width: 210, resizable: false},
       {title: 'Length', field: "end", formatter: getRunLength, width: 85, resizable: false, headerSort:false},
@@ -113,7 +113,7 @@ function InitializeRunsTable() {
             UpdateRunsTable();
             $("#newcomment").val("");
             ShowDetail(run, mode);
-            table.ajax.reload();
+            // table.ajax.reload(); // we don't use a DataTable
           },
           error: function (jqXHR, textStatus, errorThrown) {
             alert("Error, status = " + textStatus + ", " +
@@ -151,7 +151,7 @@ function InitializeRunsTable() {
                 UpdateRunsTable();
                 $("#newtag").val("");
                 ShowDetail(run, mode);
-                table.ajax.reload();
+                // table.ajax.reload();  // we don't use a DataTable
               },
               error: function (jqXHR, textStatus, errorThrown) {
                 alert("Error, status = " + textStatus + ", " +
