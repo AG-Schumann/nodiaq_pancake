@@ -112,7 +112,7 @@ function InitializeRunsTable() {
             UpdateRunsTable();
             $("#newcomment").val("");
             ShowDetail(run, mode);
-            table.ajax.reload();
+            // table.ajax.reload(); // we don't use a DataTable
           },
           error: function (jqXHR, textStatus, errorThrown) {
             alert("Error, status = " + textStatus + ", " +
@@ -150,7 +150,7 @@ function InitializeRunsTable() {
                 UpdateRunsTable();
                 $("#newtag").val("");
                 ShowDetail(run, mode);
-                table.ajax.reload();
+                // table.ajax.reload(); // we don't use a DataTable
               },
               error: function (jqXHR, textStatus, errorThrown) {
                 alert("Error, status = " + textStatus + ", " +
