@@ -91,6 +91,7 @@ router.post('/removetag', common.ensureAuthenticated, function(req, res){
     deleted_by = req.user.username;
   if (typeof deleted_by == 'undefined' || deleted_by == 'not set') {
     return res.json({err: "Invalid user credentials"});
+  }
   var query = {'number': parseInt(run, 10), 'mode': mode};
   var update = {$pull: {tags: {name: tag, user: tag_user}},
     $push: {deleted_tags: {name: tag, user: tag_user, deleted_by: deleted_by, date: new Date()}}};
