@@ -4,6 +4,7 @@ var url = require("url");
 var router = express.Router();
 const SCRIPT_VERSION = '20211103';
 var common = require('./common');
+const config = require("../config/config");
 
 
 router.get('/', common.ensureAuthenticated, function(req, res) {
@@ -59,11 +60,12 @@ router.post('/addtag', common.ensureAuthenticated, function(req, res){
     return res.json({err: "Please hard-reload your page (shift-f5 or equivalent)"});
   if (tag[0] === '_') // underscore tags are protected
     return res.sendStatus(403);
-  var user = req.body.user;
+  let user = 'web user';
+  if (config.use_authentication)
+    user = req.user.username;
   if (typeof user == 'undefined' || user == 'not set') {
     return res.json({err: "Invalid user credentials"});
   }
-
   // Convert runs to int
   var runsint = parseInt(run);
   // Update many
@@ -84,9 +86,14 @@ router.post('/removetag', common.ensureAuthenticated, function(req, res){
   if (tag[0] === '_') { // underscore tags are protected
     return res.sendStatus(403);
   }
+  let deleted_by = 'web user';
+  if (config.use_authentication)
+    deleted_by = req.user.username;
+  if (typeof deleted_by == 'undefined' || deleted_by == 'not set') {
+    return res.json({err: "Invalid user credentials"});
   var query = {'number': parseInt(run, 10), 'mode': mode};
   var update = {$pull: {tags: {name: tag, user: tag_user}},
-    $push: {deleted_tags: {name: tag, user: tag_user, deleted_by: req.user.username, date: new Date()}}};
+    $push: {deleted_tags: {name: tag, user: tag_user, deleted_by: deleted_by, date: new Date()}}};
   req.runs_coll.update(query, update)
   .then(() => res.status(200).json({}))
   .catch(err => {console.log(err.message); return res.status(200).json({err: err.message});});

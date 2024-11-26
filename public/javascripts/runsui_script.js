@@ -146,7 +146,7 @@ function AddTag() {
           $.ajax({
             type: "POST",
             url: "runsui/addtag",
-            data: {"version": SCRIPT_VERSION, "runid": run, "mode": mode, "tag": tag, "user": "web user"},
+            data: {"version": SCRIPT_VERSION, "runid": run, "mode": mode, "tag": tag},
             success: (data) => {
               if (typeof data.err != 'undefined') alert(data.err);
               UpdateRunsTable();
