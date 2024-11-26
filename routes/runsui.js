@@ -52,15 +52,14 @@ router.get('/get_run_doc', common.ensureAuthenticated, function(req, res){
 });
 
 router.post('/addtag', common.ensureAuthenticated, function(req, res){
-  var run = req.body.number;
+  var run = req.body.runid;
   var mode = req.body.mode;
   var tag = req.body.tag;
   if (typeof req.body.version == 'undefined' || req.body.version != SCRIPT_VERSION)
     return res.json({err: "Please hard-reload your page (shift-f5 or equivalent)"});
   if (tag[0] === '_') // underscore tags are protected
     return res.sendStatus(403);
-
-  var user = req.user.username;
+  var user = req.body.user;
   if (typeof user == 'undefined' || user == 'not set') {
     return res.json({err: "Invalid user credentials"});
   }
